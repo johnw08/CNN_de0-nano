@@ -35,13 +35,13 @@ always @(posedge clk) begin
 end
 
 generate
-  for (i = 0; i < 64; i++) begin
+  for (i = 0; i < 64; i++) begin: dout_for
     assign dout[i] = ram[i][17:0];
   end
 endgenerate
 
 generate
-  for (j = 0; j < 16; j++) begin
+  for (j = 0; j < 16; j++) begin: dout_wr_for
     assign dout_wr[j] = ram[addr_wr + j];
   end
 endgenerate
