@@ -44,23 +44,27 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   assign rd = addr_rd < addr_wr;
 
   always @(posedge clk, negedge rst_n) begin
-    if (!rst_n )
+    if (!rst_n)
       addr_wr <= 10'h0;
-	 else if (tx_done)
-		addr_wr <= 10'h0;
+	  else if (tx_done)
+		  addr_wr <= 10'h0;
     else if (rx_rdy)
       addr_wr <= addr_wr + 10'h008;
   end
 
   always @(posedge clk, negedge rst_n) begin
-    if (!rst_n || tx_done)
+    if (!rst_n)
+      addr_rd_cnt <= 5'h0;
+    else if (tx_done)
       addr_rd_cnt <= 5'h0;
     else if (addr_inc)
       addr_rd_cnt <= addr_rd_mod ? 5'h0 : addr_rd_cnt + 5'h1;
   end
 
   always @(posedge clk, negedge rst_n) begin
-    if (!rst_n || tx_done)
+    if (!rst_n)
+      addr_rd <= 10'h03A;
+    else if (tx_done)
       addr_rd <= 10'h03A;
     else if (addr_inc)
       addr_rd <= addr_rd_inc;

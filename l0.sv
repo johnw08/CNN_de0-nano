@@ -63,28 +63,38 @@ assign addr_inc = addr_inc_r;
 assign rd = addr_ram_rd < addr_ram_wr;
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_wr <= 10'h0;
+  else if (tx_done)
     addr_ram_wr <= 10'h0;
   else if (wr)
     addr_ram_wr <= addr_ram_wr + 10'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    cnt_4 <= 4'h0;
+  else if (tx_done)
     cnt_4 <= 4'h0;
   else if (rd)
     cnt_4 <= cnt_4 == 4'hC ? 4'h0 : cnt_4 + 1'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_rd <= 10'h01B;
+  else if (tx_done)
     addr_ram_rd <= 10'h01B;
   else if (rd)
     addr_ram_rd <= cnt_4 == 4'hC ? (addr_ram_rd + 10'h1C) : (addr_ram_rd + 10'h2);
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || dout_temp_clr) begin
+  if (!rst_n) begin
+    dout_temp_0 <= 18'h0;
+    dout_temp_1 <= 18'h0;
+  end
+  else if (dout_temp_clr) begin
     dout_temp_0 <= 18'h0;
     dout_temp_1 <= 18'h0;
   end
@@ -95,14 +105,18 @@ always @(posedge clk, negedge rst_n) begin
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || addr_din_clr)
+  if (!rst_n)
+    addr_din <= 4'h0;
+  else if (addr_din_clr)
     addr_din <= 4'h0;
   else if (addr_din_inc)
     addr_din <= addr_din + 4'h3;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    state <= IDLE;
+  else if (tx_done)
     state <= IDLE;
   else
     state <= nxt_state;

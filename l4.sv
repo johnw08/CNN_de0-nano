@@ -65,49 +65,63 @@ assign last = addr_cnt_25 == 5'h18 && addr_cnt_4_din == 2'h3;
 assign rd = addr_cnt_25 == 5'h19;
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_rom_0 <= 13'h0;
+  else if (tx_done)
     addr_rom_0 <= 13'h0;
   else if (addr_rom_inc)
     addr_rom_0 <= addr_rom_0 + 13'h10;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_rom_1 <= 6'h0;
+  else if (tx_done)
     addr_rom_1 <= 6'h0;
   else if (addr_rom_inc)
     addr_rom_1 <= addr_rom_1 + 6'h10;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_4_din <= 2'h0;
+  else if (tx_done)
     addr_cnt_4_din <= 2'h0;
   else if (addr_inc && addr_cnt_4_ram == 2'h3)
     addr_cnt_4_din <= addr_cnt_4_din + 2'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_64 <= 6'h0;
+  else if (tx_done)
     addr_cnt_64 <= 6'h0;
   else if (addr_inc)
     addr_cnt_64 <= addr_cnt_64 + 6'h10;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_4_ram <= 2'h0;
+  else if (tx_done)
     addr_cnt_4_ram <= 2'h0;
   else if (addr_inc)
     addr_cnt_4_ram <= addr_cnt_4_ram + 2'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_25 <= 5'h0;
+  else if (tx_done)
     addr_cnt_25 <= 5'h0;
   else if (addr_rd_inc)
     addr_cnt_25 <= addr_cnt_25 + 5'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    state <= IDLE;
+  else if (tx_done)
     state <= IDLE;
   else
     state <= nxt_state;

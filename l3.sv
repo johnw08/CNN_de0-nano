@@ -49,14 +49,18 @@ assign din_3_max = din_3_max_01 > din_3_max_23 ? din_3_max_01 : din_3_max_23;
 assign rd = addr_ram_rd < addr_ram_wr;
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_wr <= 5'h0;
+  else if (tx_done)
     addr_ram_wr <= 5'h0;
   else if (strt)
     addr_ram_wr <= addr_ram_wr + 5'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_rd <= 5'h0;
+  else if (tx_done)
     addr_ram_rd <= 5'h0;
   else if (addr_rd_inc)
     addr_ram_rd <= addr_ram_rd + 5'h1;

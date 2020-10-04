@@ -80,42 +80,58 @@ assign addr_rd_inc = addr_rd_inc_r;
 assign rd = (addr_ram_rd < addr_ram_wr) && (addr_ram_rd_cnt < 3'h5);
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || addr_din_clr)
+  if (!rst_n)
+    addr_din <= 5'h0;
+  else if (addr_din_clr)
     addr_din <= 5'h0;
   else if (addr_din_inc)
     addr_din <= addr_din + 5'h3;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_wr <= 7'h0;
+  else if (tx_done)
     addr_ram_wr <= 7'h0;
   else if (addr_wr_inc)
     addr_ram_wr <= addr_ram_wr + 7'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_rd <= 7'hC;
+  else if (tx_done)
     addr_ram_rd <= 7'hC;
   else if (rd)
     addr_ram_rd <= (addr_ram_rd_mod == 3'h4) ? (addr_ram_rd + 7'hE) : addr_ram_rd + 7'h2;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_rd_mod <= 3'h0;
+  else if (tx_done)
     addr_ram_rd_mod <= 3'h0;
   else if (rd)
     addr_ram_rd_mod <= (addr_ram_rd_mod == 3'h4) ? 3'h0 : addr_ram_rd_mod + 3'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_ram_rd_cnt <= 3'h0;
+  else if (tx_done)
     addr_ram_rd_cnt <= 3'h0;
   else if (rd && (addr_ram_rd_mod == 3'h4))
     addr_ram_rd_cnt <= addr_ram_rd_cnt + 3'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || temp_clr) begin
+  if (!rst_n) begin
+    temp_0 <= 36'h0;
+    temp_1 <= 36'h0;
+    temp_2 <= 36'h0;
+    temp_3 <= 36'h0;
+  end
+  else if (temp_clr) begin
     temp_0 <= 36'h0;
     temp_1 <= 36'h0;
     temp_2 <= 36'h0;
@@ -131,7 +147,9 @@ always @(posedge clk, negedge rst_n) begin
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    state <= IDLE;
+  else if (tx_done)
     state <= IDLE;
   else
     state <= nxt_state;

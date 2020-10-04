@@ -58,56 +58,72 @@ endgenerate
 
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    max_index <= 4'h0;
+  else if (tx_done)
     max_index <= 4'h0;
   else if (update)
     max_index <= addr_cnt_10;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    max_val <= 18'h0;
+  else if (tx_done)
     max_val <= 18'h0;
   else if (update)
     max_val <= dout_relu;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    temp <= 36'h0;
+  else if (tx_done)
     temp <= 36'h0;
   else if (addr_inc)
     temp <= dout_mult;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_rom_0 <= 10'h0;
+  else if (tx_done)
     addr_rom_0 <= 10'h0;
   else if (addr_rom_inc)
     addr_rom_0 <= addr_rom_0 + 10'h20;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_2 <= 1'h0;
+  else if (tx_done)
     addr_cnt_2 <= 1'h0;
   else if (addr_inc)
     addr_cnt_2 <= addr_cnt_2 + 1'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_10 <= 4'h0;
+  else if (tx_done)
     addr_cnt_10 <= 4'h0;
   else if (addr_inc && addr_cnt_2 == 1'h1)
     addr_cnt_10 <= addr_cnt_10 + 4'h1;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    addr_cnt_64 <= 6'h0;
+  else if (tx_done)
     addr_cnt_64 <= 6'h0;
   else if (addr_inc)
     addr_cnt_64 <= addr_cnt_64 + 6'h20;
 end
 
 always @(posedge clk, negedge rst_n) begin
-  if (!rst_n || tx_done)
+  if (!rst_n)
+    state <= IDLE;
+  else if (tx_done)
     state <= IDLE;
   else
     state <= nxt_state;

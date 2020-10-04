@@ -36,7 +36,7 @@ module layer_1(clk, rst_n, strt, din_0, din_1, tx_done, addr_rd_inc, rd, dout);
   assign addr_rd_mod = addr_rd_cnt == 4'hA;
   assign addr_rd_nxt = addr_rd_mod ? addr_rd + 8'h3 : addr_rd + 8'h1;
 
-  
+
   genvar i;
   generate
 	for (i = 0; i < 9; i=i+1) begin: dout_for
@@ -45,7 +45,7 @@ module layer_1(clk, rst_n, strt, din_0, din_1, tx_done, addr_rd_inc, rd, dout);
 		assign dout[i+9] = dout_0[i];
 	end
   endgenerate
-  
+
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       addr_wr <= 8'h0;
@@ -56,14 +56,18 @@ module layer_1(clk, rst_n, strt, din_0, din_1, tx_done, addr_rd_inc, rd, dout);
   end
 
   always @(posedge clk, negedge rst_n) begin
-    if (!rst_n || tx_done)
+    if (!rst_n)
+      addr_rd_cnt <= 4'h0;
+    else if (tx_done)
       addr_rd_cnt <= 4'h0;
     if (addr_rd_inc)
       addr_rd_cnt <= addr_rd_mod ? 4'h0 : addr_rd_cnt + 4'h1;
   end
 
   always @(posedge clk, negedge rst_n) begin
-    if (!rst_n || tx_done)
+    if (!rst_n)
+      addr_rd <= 8'h1C;
+    else if (tx_done)
       addr_rd <= 8'h1C;
     else if (addr_rd_inc)
       addr_rd <= addr_rd_nxt;
