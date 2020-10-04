@@ -59,7 +59,7 @@ module layer_1(clk, rst_n, strt, din_0, din_1, tx_done, addr_rd_inc, rd, dout);
       addr_rd_cnt <= 4'h0;
     else if (tx_done)
       addr_rd_cnt <= 4'h0;
-    if (addr_rd_inc)
+    else if (addr_rd_inc)
       addr_rd_cnt <= addr_rd_mod ? 4'h0 : addr_rd_cnt + 4'h1;
   end
 
