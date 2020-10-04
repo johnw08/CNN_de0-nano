@@ -39,11 +39,10 @@ module layer_1(clk, rst_n, strt, din_0, din_1, tx_done, addr_rd_inc, rd, dout);
 
   genvar i;
   generate
-	for (i = 0; i < 9; i=i+1) begin: dout_for
-		//assign dout[17:0] = {dout_1[8:0], dout_0[8:0]};
-		assign dout[i] = dout_0[i];
-		assign dout[i+9] = dout_0[i];
-	end
+  	for (i = 0; i < 9; i=i+1) begin: dout_for
+  		assign dout[i] = dout_0[i];
+  		assign dout[i+9] = dout_1[i];
+  	end
   endgenerate
 
   always @(posedge clk, negedge rst_n) begin

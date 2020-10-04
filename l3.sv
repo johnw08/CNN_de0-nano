@@ -28,7 +28,11 @@ l3_ram l3_ram_3(.clk(clk), .rst_n(rst_n), .wr(strt), .addr_wr(addr_ram_wr)
               , .din(din_3_max), .rd(rd), .addr_rd(addr_ram_rd)
               , .dout(dout_ram_3));
 
-assign dout = {dout_ram_3, dout_ram_2, dout_ram_1, dout_ram_0};
+//assign dout = {dout_ram_3, dout_ram_2, dout_ram_1, dout_ram_0};
+assign dout[0] = dout_ram_0;
+assign dout[1] = dout_ram_1;
+assign dout[2] = dout_ram_2;
+assign dout[3] = dout_ram_3;
 
 assign din_0_max_01 = din_0[0] > din_0[1] ? din_0[0] : din_0[1];
 assign din_0_max_23 = din_0[2] > din_0[3] ? din_0[2] : din_0[3];

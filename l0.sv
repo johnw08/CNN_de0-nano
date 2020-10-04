@@ -53,7 +53,10 @@ l0_add l0_bias_1(.din(accum_1), .bias(dout_rom_2[1]), .dout(dout_add_1));
 l0_relu l0_relu_0(.din(dout_add_0), .dout(dout_relu_0));
 l0_relu l0_relu_1(.din(dout_add_1), .dout(dout_relu_1));
 
-assign din_mult = {din[addr_din + 4'h2], din[addr_din + 4'h1], din[addr_din]};
+//assign din_mult = {din[addr_din + 4'h2], din[addr_din + 4'h1], din[addr_din]};
+assign din_mult[0] = din[addr_din];
+assign din_mult[1] = din[addr_din + 4'h1];
+assign din_mult[2] = din[addr_din + 4'h2];
 
 assign accum_0 = dout_temp_0 + dout_mult_0;
 assign accum_1 = dout_temp_1 + dout_mult_1;

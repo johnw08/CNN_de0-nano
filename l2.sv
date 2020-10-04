@@ -67,8 +67,9 @@ l2_relu l2_relu_1(.din(dout_add_1), .dout(dout_relu_1));
 l2_relu l2_relu_2(.din(dout_add_2), .dout(dout_relu_2));
 l2_relu l2_relu_3(.din(dout_add_3), .dout(dout_relu_3));
 
-
-assign din_mult = {din[addr_din + 5'h2], din[addr_din + 5'h1], din[addr_din]};
+assign din_mult[0] = din[addr_din];
+assign din_mult[1] = din[addr_din + 5'h1];
+assign din_mult[2] = din[addr_din + 5'h2];
 
 assign accum_0 = temp_0 + dout_mult_0;
 assign accum_1 = temp_1 + dout_mult_1;
