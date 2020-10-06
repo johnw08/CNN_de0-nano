@@ -1,8 +1,8 @@
 module l5_rom_1(clk, dout);
 input clk;
-output reg [8:0] dout[10:0];
+output reg [8:0] dout[9:0];
 
-reg [8:0] rom[10:0];
+reg [8:0] rom[9:0];
 integer i;
 
 initial begin
@@ -10,7 +10,7 @@ initial begin
 end
 
 always @(posedge clk) begin
-  for (i = 0; i < 11; i++) begin
+  for (i = 0; i < 10; i++) begin
     dout[i] <= rom[i];
   end
 end

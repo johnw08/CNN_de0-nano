@@ -10,7 +10,7 @@ output [7:0] dout;
 reg addr_rom_inc;
 reg [9:0] addr_rom_0;
 wire [8:0] dout_rom_0[31:0];
-wire [8:0] dout_rom_1[10:0];
+wire [8:0] dout_rom_1[9:0];
 
 wire [17:0] din_mult[31:0];
 wire [35:0] dout_mult;

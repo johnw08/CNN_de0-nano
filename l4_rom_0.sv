@@ -3,7 +3,7 @@ input clk;
 input [12:0] addr;
 output reg [8:0] dout[15:0];
 
-reg [8:0] rom[6415:0];
+reg [8:0] rom[6399:0];
 
 initial begin
   $readmemb("l4_Weight.txt", rom);

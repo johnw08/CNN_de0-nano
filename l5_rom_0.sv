@@ -3,7 +3,7 @@ input clk;
 input [9:0] addr;
 output reg [8:0] dout[31:0];
 
-reg [8:0] rom[703:0];
+reg [8:0] rom[639:0];
 integer i;
 
 initial begin
