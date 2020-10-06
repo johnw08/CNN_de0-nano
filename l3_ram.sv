@@ -13,5 +13,5 @@ always @(posedge clk) begin
     ram[addr_wr] <= din;
 end
 
-assign dout = rd ? ram[addr_rd] : 18'hXXXXX;
+assign dout = ram[addr_rd];
 endmodule

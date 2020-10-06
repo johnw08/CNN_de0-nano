@@ -14,9 +14,9 @@ always @(posedge clk) begin
     ram[addr_wr] <= din;
 end
 
-assign dout[0] = rd ? ram[addr_rd - 7'h0C] : 18'hXXXX;
-assign dout[1] = rd ? ram[addr_rd - 7'h0B] : 18'hXXXX;
-assign dout[2] = rd ? ram[addr_rd - 7'h01] : 18'hXXXX;
-assign dout[3] = rd ? ram[addr_rd] : 18'hXXXX;
+assign dout[0] = ram[addr_rd - 7'h0C];
+assign dout[1] = ram[addr_rd - 7'h0B];
+assign dout[2] = ram[addr_rd - 7'h01];
+assign dout[3] = ram[addr_rd];
 
 endmodule
