@@ -1,13 +1,17 @@
-module cnn_core(clk, rst_n, strt, din, trmt, dout, addr_inc, tx_done);
+module cnn_core(clk, rst_n, strt, tx_done, din, bsy, trmt, dout);
   input clk, rst_n;
   input strt;
   input tx_done;
-  input [1:0] din[8:0];
+  input din;
+  output bsy;
   output trmt;
-  output addr_inc;
   output [7:0] dout;
 
-
+  wire rdy_l0;
+  wire [17:0] dout_l0_0, dout_l0_1;
+  layer_0 conv_0(.clk(clk),.rst_n(rst_n),.strt(strt),.din(din),.tx_done(tx_done),
+                .bsy(bsy),.rdy(rdy_l0),.dout_0(dout_l0_0),.dout_1(dout_l0_1));
+/*
   wire [17:0] dout_l0_0[3:0], dout_l0_1[3:0];
   wire rd_l0;
 
@@ -48,4 +52,5 @@ module cnn_core(clk, rst_n, strt, din, trmt, dout, addr_inc, tx_done);
   layer_5 out(.clk(clk), .rst_n(rst_n), .strt(rd_l4), .din(dout_l4), .tx_done(tx_done)
                , .rd(trmt), .dout(dout));
 
+*/
 endmodule

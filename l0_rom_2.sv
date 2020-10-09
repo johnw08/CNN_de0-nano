@@ -1,6 +1,6 @@
-module l0_rom_2 (clk, dout);
+module l0_rom_2 (clk, dout_0, dout_1);
   input clk;
-  output reg [8:0] dout[1:0];
+  output reg [8:0] dout_0, dout_1;
 
   reg [8:0] rom[1:0];
 
@@ -9,8 +9,8 @@ module l0_rom_2 (clk, dout);
   end
 
   always @(posedge clk) begin
-    dout[0] <= rom[0];
-    dout[1] <= rom[1];
+    dout_0 <= rom[0];
+    dout_1 <= rom[1];
   end
 
 endmodule // l0_rom_3

@@ -1,12 +1,133 @@
-module layer_0(clk, rst_n, strt, tx_done, din, addr_inc, rd, dout_0, dout_1);
+module layer_0(clk, rst_n, strt, tx_done, din, bsy, rdy, dout_0, dout_1);
 input clk, rst_n;
 input strt;
 input tx_done;
-input [1:0] din[8:0];
-output addr_inc;
-output rd;
-output [17:0] dout_0[3:0], dout_1[3:0];
+input din;
+output reg bsy;
+output rdy;
+output [17:0] dout_0, dout_1;
 
+reg wr;
+reg [9:0] addr_wr, addr_rd;
+wire [17:0] din_ram_0, din_ram_1;
+
+reg [3:0] addr_rd_w;
+wire signed [8:0] dout_w_0;
+wire signed [8:0] dout_w_1;
+
+wire [8:0] dout_bias_0, dout_bias_1;
+
+reg addr_wr_inc;
+reg addr_rd_w_clr;
+reg addr_rd_w_inc;
+reg temp_clr;
+reg [17:0] temp_0, temp_1;
+wire signed [8:0] din_ex;
+wire signed [17:0] mult_0, mult_1;
+wire signed [17:0] add_0, add_1;
+
+
+typedef enum reg {IDLE, BUSY} state_wr_t;
+state_wr_t state_wr, nxt_state_wr;
+
+l0_ram l0_ram_0(.clk(clk), .rst_n(rst_n), .wr(wr), .addr_wr(addr_wr)
+              , .din(din_ram_0), .addr_rd(addr_rd), .dout(dout_ram_0));
+
+l0_ram l0_ram_1(.clk(clk), .rst_n(rst_n), .wr(wr), .addr_wr(addr_wr)
+              , .din(din_ram_1), .addr_rd(addr_rd), .dout(dout_ram_0));
+
+l0_rom_0 l0_weight_0(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_0));
+
+l0_rom_1 l0_weight_1(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_1));
+
+l0_rom_2 l0_bias(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1));
+
+assign din_ex = {{8{din}}, din};
+
+assign mult_0 = din_ex * dout_w_0;
+assign mult_1 = din_ex * dout_w_1;
+
+assign add_0 = temp_0 + {{9{dout_bias_0[8]}}, dout_bias_0[8:0]};
+assign add_1 = temp_1 + {{9{dout_bias_1[8]}}, dout_bias_1[8:0]};
+
+assign din_ram_0 = add_0 > 0 ? add_0 : 18'h0;
+assign din_ram_1 = add_1 > 0 ? add_1 : 18'h0;
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    addr_wr <= 10'h0;
+  else if (tx_done)
+    addr_wr <= 10'h0;
+  else if (addr_wr_inc)
+    addr_wr <= addr_wr + 10'h1;
+end
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n) begin
+    temp_0 <= 18'h0;
+    temp_1 <= 18'h0;
+  end
+  else if (temp_clr) begin
+    temp_0 <= 18'h0;
+    temp_1 <= 18'h0;
+  end
+  else begin
+    temp_0 <= temp_0 + mult_0;
+    temp_1 <= temp_1 + mult_1;
+  end
+end
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    addr_rd_w <= 4'h0;
+  else if (addr_rd_w_clr)
+    addr_rd_w <= 4'h0;
+  else if (addr_rd_w_inc)
+    addr_rd_w <= addr_rd_w + 4'h1;
+end
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    state_wr <= IDLE;
+  else if (tx_done)
+    state_wr <= IDLE;
+  else
+    state_wr <= nxt_state_wr;
+end
+
+always_comb begin
+  nxt_state_wr = IDLE;
+  addr_rd_w_clr = 0;
+  addr_rd_w_inc = 0;
+  temp_clr = 0;
+  addr_wr_inc = 0;
+  wr = 0;
+  bsy = 0;
+
+  case(state_wr)
+    IDLE: begin
+      if (strt) begin
+        nxt_state_wr = BUSY;
+        addr_rd_w_inc = 1;
+        temp_clr = 1;
+      end
+    end
+    default: begin
+      bsy = 1;
+      if (addr_rd_w == 4'hA) begin
+        addr_wr_inc = 1;
+        addr_rd_w_clr = 1;
+        wr = 1;
+      end
+      else begin
+        nxt_state_wr = BUSY;
+        addr_rd_w_inc = 1;
+      end
+    end
+  endcase
+end
+
+/*
 reg wr;
 reg rd;
 reg [3:0] cnt_4;
@@ -161,6 +282,6 @@ always_comb begin
   endcase
 end
 
-
+*/
 
 endmodule

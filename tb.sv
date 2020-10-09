@@ -50,34 +50,34 @@ for (int i = 0; i < 98; i++) begin
 
 	rx_rdy = 1;
 	@(negedge clk) rx_rdy = 0;
-	repeat(5) @(negedge clk);
+	repeat(10) @(negedge clk);
 end
 
 repeat(2500) @(negedge clk);
-/*
+
 for (int i = 0; i < 784; i++) begin
-	if({w[i], w[i]} != iDUT.ram_input.ram[i])begin
-		$display("Error: %h, %h, %d", w[i], iDUT.ram_input.ram[i], i);
+	if(w[i] != iDUT.input_ram.ram[i])begin
+		$display("Error: %h, %h, %d", w[i], iDUT.input_ram.ram[i], i);
 		$stop();
 	end
 end
-*/
+
 a = 0;
 for (int i = 0; i < 766; i++) begin
 	if (l0_q0[i] != iDUT.core.conv_0.l0_ram_0.ram[i])begin
 		$display("Error: %h, %h", l0_q0[i], iDUT.core.conv_0.l0_ram_0.ram[i]);
 		$display("%d", i);
 		a = a + 1;
-		$stop();
+		//$stop();
 	end
 	if (l0_q1[i] != iDUT.core.conv_0.l0_ram_1.ram[i])begin
 		$display("Error: %h, %h", l0_q1[i], iDUT.core.conv_0.l0_ram_1.ram[i]);
 		$display("%d", i);
 		a = a + 1;
-		$stop();
+		//$stop();
 	end
 end
-
+/*
 for (int i = 0; i < 169; i++) begin
 	if (l1_q0[i] != iDUT.core.max_0.l1_ram_0.ram[i])begin
 		$display("Error: %h, %h", l1_q0[i], iDUT.core.max_0.l1_ram_0.ram[i]);
@@ -164,9 +164,9 @@ if (iDUT.trmt === 1'b1) begin
 	end
 end
 
-
+*/
 $display("%d", a);
-$display("%d, %d", l4_q[43], iDUT.core.dense_4.l4_ram.ram[43][17:0]);
+//$display("%d, %d", l4_q[43], iDUT.core.dense_4.l4_ram.ram[43][17:0]);
 $display("Success");
 $stop();
 end
