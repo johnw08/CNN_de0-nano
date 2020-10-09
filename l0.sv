@@ -1,4 +1,4 @@
-module layer_0(clk, rst_n, strt, tx_done, din, bsy_in, bsy_out, rdy, dout_0, dout_1);
+module layer_0(clk, rst_n, strt, tx_done, din, bsy_in, bsy_out, rdy, dout_0, dout_1, trmt);
 input clk, rst_n;
 input strt;
 input tx_done;
@@ -7,6 +7,7 @@ input bsy_in;
 output reg bsy_out;
 output rdy;
 output [17:0] dout_0, dout_1;
+output trmt;
 
 reg wr;
 reg [9:0] addr_wr, addr_rd;
@@ -136,10 +137,12 @@ reg addr_rd_inc;
 reg [3:0] cnt_13;
 reg [9:0] addr_rd_ram;
 
+assign trmt = addr_rd_ram == 10'h02A3 && addr_rd_inc==1;
+
 typedef enum reg [2:0] {INI, ONE, TWO, THREE, FOUR} state_rd_t;
 state_rd_t state_rd, nxt_state_rd;
 
-assign rdy = addr_rd < addr_wr;
+assign rdy = addr_rd_ram < addr_wr;
 
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
@@ -169,7 +172,8 @@ end
 always_comb begin
   nxt_state_rd = INI;
   addr_rd_inc = 0;
-
+  addr_rd = 10'h0;
+  
   case(state_rd)
     INI: begin
       if (rdy && !bsy_in) begin

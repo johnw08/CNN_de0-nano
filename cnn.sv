@@ -148,6 +148,7 @@ module cnn(clk, RST_n, RX, TX, LED);
   always_comb begin
     nxt_state_rd = INI;
     addr_rd_inc = 0;
+	 addr_rd = 10'h0;
 
     case(state_rd)
       INI: begin
