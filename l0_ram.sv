@@ -1,5 +1,5 @@
-module l0_ram (clk, rst_n, wr, addr_wr, din, addr_rd, dout);
-input clk, rst_n;
+module l0_ram (clk, wr, addr_wr, addr_rd, din, dout);
+input clk;
 input wr;
 input [9:0] addr_wr;
 input [9:0] addr_rd;

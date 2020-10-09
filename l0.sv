@@ -1,9 +1,10 @@
-module layer_0(clk, rst_n, strt, tx_done, din, bsy, rdy, dout_0, dout_1);
+module layer_0(clk, rst_n, strt, tx_done, din, bsy_in, bsy_out, rdy, dout_0, dout_1);
 input clk, rst_n;
 input strt;
 input tx_done;
 input din;
-output reg bsy;
+input bsy_in;
+output reg bsy_out;
 output rdy;
 output [17:0] dout_0, dout_1;
 
@@ -30,11 +31,11 @@ wire signed [17:0] add_0, add_1;
 typedef enum reg {IDLE, BUSY} state_wr_t;
 state_wr_t state_wr, nxt_state_wr;
 
-l0_ram l0_ram_0(.clk(clk), .rst_n(rst_n), .wr(wr), .addr_wr(addr_wr)
-              , .din(din_ram_0), .addr_rd(addr_rd), .dout(dout_ram_0));
+l0_ram l0_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .din(din_ram_0)
+              , .addr_rd(addr_rd), .dout(dout_0));
 
-l0_ram l0_ram_1(.clk(clk), .rst_n(rst_n), .wr(wr), .addr_wr(addr_wr)
-              , .din(din_ram_1), .addr_rd(addr_rd), .dout(dout_ram_0));
+l0_ram l0_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .din(din_ram_1)
+              , .addr_rd(addr_rd), .dout(dout_1));
 
 l0_rom_0 l0_weight_0(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_0));
 
@@ -102,7 +103,7 @@ always_comb begin
   temp_clr = 0;
   addr_wr_inc = 0;
   wr = 0;
-  bsy = 0;
+  bsy_out = 0;
 
   case(state_wr)
     IDLE: begin
@@ -113,7 +114,7 @@ always_comb begin
       end
     end
     default: begin
-      bsy = 1;
+      bsy_out = 1;
       if (addr_rd_w == 4'hA) begin
         addr_wr_inc = 1;
         addr_rd_w_clr = 1;
@@ -123,6 +124,73 @@ always_comb begin
         nxt_state_wr = BUSY;
         addr_rd_w_inc = 1;
       end
+    end
+  endcase
+end
+
+/*
+  Read DATA
+*/
+
+reg addr_rd_inc;
+reg [3:0] cnt_13;
+reg [9:0] addr_rd_ram;
+
+typedef enum reg [2:0] {INI, ONE, TWO, THREE, FOUR} state_rd_t;
+state_rd_t state_rd, nxt_state_rd;
+
+assign rdy = addr_rd < addr_wr;
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    cnt_13 <= 4'h0;
+  else if (addr_rd_inc)
+    cnt_13 <= cnt_13 == 4'hC ? 4'h0 : cnt_13 + 4'h1;
+end
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    addr_rd_ram <= 10'h01B;
+  else if (tx_done)
+    addr_rd_ram <= 10'h01B;
+  else if (addr_rd_inc)
+    addr_rd_ram <= cnt_13 == 10'hC ? addr_rd_ram + 10'h1C : addr_rd_ram + 10'h2;
+end
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    state_rd <= INI;
+  else if (tx_done)
+    state_rd <= INI;
+  else
+    state_rd <= nxt_state_rd;
+end
+
+always_comb begin
+  nxt_state_rd = INI;
+  addr_rd_inc = 0;
+
+  case(state_rd)
+    INI: begin
+      if (rdy && !bsy_in) begin
+        nxt_state_rd = ONE;
+        addr_rd = addr_rd_ram - 10'h1B;
+      end
+    end
+    ONE: begin
+      nxt_state_rd = TWO;
+      addr_rd = addr_rd_ram - 10'h1A;
+    end
+    TWO: begin
+      nxt_state_rd = THREE;
+      addr_rd = addr_rd_ram - 10'h01;
+    end
+    THREE: begin
+      nxt_state_rd = FOUR;
+      addr_rd = addr_rd_ram;
+    end
+    default: begin
+      addr_rd_inc = 1;
     end
   endcase
 end
