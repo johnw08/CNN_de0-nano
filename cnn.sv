@@ -196,9 +196,9 @@ module cnn(clk, RST_n, RX, TX, LED);
     endcase
   end
 
-  /*
+  
   assign LED = 8'hFF;
-
+  /*
   assign addr_rd_mod = addr_rd_cnt == 5'h19;
   assign addr_rd_inc = addr_rd_mod ? addr_rd + 10'h3 : addr_rd + 10'h1;
 
