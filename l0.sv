@@ -1,13 +1,11 @@
-module layer_0(clk, rst_n, strt, tx_done, din, bsy_in, bsy_out, rdy, dout_0, dout_1, trmt);
+module layer_0(clk, rst_n, strt, tx_done, din, bsy_out, rdy, dout_0, dout_1);
 input clk, rst_n;
 input strt;
 input tx_done;
 input din;
-input bsy_in;
 output reg bsy_out;
 output rdy;
 output [17:0] dout_0, dout_1;
-output trmt;
 
 reg wr;
 reg [9:0] addr_wr, addr_rd;
@@ -136,11 +134,10 @@ end
 reg addr_rd_inc;
 reg [3:0] cnt_13;
 reg [9:0] addr_rd_ram;
-
-assign trmt = addr_rd_ram == 10'h02A3 && addr_rd_inc==1;
-
 typedef enum reg [2:0] {INI, ONE, TWO, THREE, FOUR} state_rd_t;
 state_rd_t state_rd, nxt_state_rd;
+
+assign trmt = addr_rd_ram == 10'h02A3 && addr_rd_inc==1;
 
 assign rdy = addr_rd_ram < addr_wr;
 
@@ -157,7 +154,7 @@ always @(posedge clk, negedge rst_n) begin
   else if (tx_done)
     addr_rd_ram <= 10'h01B;
   else if (addr_rd_inc)
-    addr_rd_ram <= cnt_13 == 10'hC ? addr_rd_ram + 10'h1C : addr_rd_ram + 10'h2;
+    addr_rd_ram <= cnt_13 == 4'hC ? addr_rd_ram + 10'h1C : addr_rd_ram + 10'h2;
 end
 
 always @(posedge clk, negedge rst_n) begin
@@ -173,10 +170,10 @@ always_comb begin
   nxt_state_rd = INI;
   addr_rd_inc = 0;
   addr_rd = 10'h0;
-  
+
   case(state_rd)
     INI: begin
-      if (rdy && !bsy_in) begin
+      if (rdy) begin
         nxt_state_rd = ONE;
         addr_rd = addr_rd_ram - 10'h1B;
       end

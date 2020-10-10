@@ -1,4 +1,5 @@
 module cnn(clk, RST_n, RX, TX, LED);
+// module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
@@ -105,7 +106,7 @@ module cnn(clk, RST_n, RX, TX, LED);
         cnt_8_inc = 1;
         addr_wr_inc = 1;
         wr = 1;
-        if (cnt_8 != 8'h7)
+        if (cnt_8 != 3'h7)
           nxt_state_wr = DATA;
       end
     endcase
@@ -133,7 +134,7 @@ module cnn(clk, RST_n, RX, TX, LED);
     else if (tx_done)
       addr_rd_ram <= 10'h03A;
     else if (addr_rd_inc)
-      addr_rd_ram <= cnt_26 == 5'h19 ? addr_rd_ram + 5'h3 : addr_rd_ram + 5'h1;
+      addr_rd_ram <= cnt_26 == 5'h19 ? addr_rd_ram + 10'h3 : addr_rd_ram + 10'h1;
   end
 
   always @(posedge clk, negedge rst_n) begin
@@ -148,7 +149,7 @@ module cnn(clk, RST_n, RX, TX, LED);
   always_comb begin
     nxt_state_rd = INI;
     addr_rd_inc = 0;
-	 addr_rd = 10'h0;
+	  addr_rd = 10'h0;
 
     case(state_rd)
       INI: begin

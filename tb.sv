@@ -53,10 +53,10 @@ for (int i = 0; i < 98; i++) begin
 	repeat(10) @(negedge clk);
 end
 
-repeat(2500) @(negedge clk);
+repeat(10000) @(negedge clk);
 
 for (int i = 0; i < 784; i++) begin
-	if(w[i] != iDUT.input_ram.ram[i])begin
+	if(w[i] !== iDUT.input_ram.ram[i])begin
 		$display("Error: %h, %h, %d", w[i], iDUT.input_ram.ram[i], i);
 		$stop();
 	end
@@ -64,28 +64,28 @@ end
 
 a = 0;
 for (int i = 0; i < 766; i++) begin
-	if (l0_q0[i] != iDUT.core.conv_0.l0_ram_0.ram[i])begin
+	if (l0_q0[i] !== iDUT.core.conv_0.l0_ram_0.ram[i])begin
 		$display("Error: %h, %h", l0_q0[i], iDUT.core.conv_0.l0_ram_0.ram[i]);
 		$display("%d", i);
 		a = a + 1;
-		//$stop();
+		$stop();
 	end
-	if (l0_q1[i] != iDUT.core.conv_0.l0_ram_1.ram[i])begin
+	if (l0_q1[i] !== iDUT.core.conv_0.l0_ram_1.ram[i])begin
 		$display("Error: %h, %h", l0_q1[i], iDUT.core.conv_0.l0_ram_1.ram[i]);
 		$display("%d", i);
 		a = a + 1;
-		//$stop();
+		$stop();
 	end
 end
-/*
+
 for (int i = 0; i < 169; i++) begin
-	if (l1_q0[i] != iDUT.core.max_0.l1_ram_0.ram[i])begin
+	if (l1_q0[i] !== iDUT.core.max_0.l1_ram_0.ram[i])begin
 		$display("Error: %h, %h", l1_q0[i], iDUT.core.max_0.l1_ram_0.ram[i]);
 		$display("%d", i);
 		a = a + 1;
 		$stop();
 	end
-        if (l1_q1[i] != iDUT.core.max_0.l1_ram_1.ram[i])begin
+        if (l1_q1[i] !== iDUT.core.max_0.l1_ram_1.ram[i])begin
 		$display("Error: %h, %h", l1_q1[i], iDUT.core.max_0.l1_ram_1.ram[i]);
 		$display("%d", i);
 		a = a + 1;
@@ -94,13 +94,13 @@ for (int i = 0; i < 169; i++) begin
 end
 
 for (int i = 0; i < 121; i++) begin
-	if (l2_q0[i] != iDUT.core.conv_1.l2_ram_0.ram[i])begin
+	if (l2_q0[i] !== iDUT.core.conv_1.l2_ram_0.ram[i])begin
 		$display("Error: %h, %h", l2_q0[i], iDUT.core.conv_1.l2_ram_0.ram[i]);
 		$display("%d", i);
 		a = a + 1;
 		$stop();
 	end
-	if (l2_q1[i] != iDUT.core.conv_1.l2_ram_1.ram[i])begin
+	if (l2_q1[i] !== iDUT.core.conv_1.l2_ram_1.ram[i])begin
 		$display("Error: %h, %h", l2_q1[i], iDUT.core.conv_1.l2_ram_1.ram[i]);
 		$display("%d", i);
 		a = a + 1;
@@ -119,6 +119,8 @@ for (int i = 0; i < 121; i++) begin
 		$stop();
 	end
 end
+
+/*
 
 for (int i = 0; i < 25; i++) begin
 	if (l3_q0[i] !== iDUT.core.max_1.l3_ram_0.ram[i])begin
@@ -167,6 +169,7 @@ end
 */
 $display("%d", a);
 //$display("%d, %d", l4_q[43], iDUT.core.dense_4.l4_ram.ram[43][17:0]);
+$display("%d, %d",l2_q0[115], iDUT.core.conv_1.l2_ram_0.ram[115]);
 $display("Success");
 $stop();
 end

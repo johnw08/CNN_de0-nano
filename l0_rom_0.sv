@@ -13,4 +13,4 @@ module l0_rom_0 (clk, addr_rd, dout);
     dout <= rom[addr_rd];
   end
 
-endmodule 
+endmodule
