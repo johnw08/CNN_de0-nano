@@ -1,4 +1,4 @@
-module layer_2(clk, rst_n, strt, tx_done, din_0, din_1, bsy_out, rdy, dout, trmt);
+module layer_2(clk, rst_n, strt, tx_done, din_0, din_1, bsy_out, rdy, dout);
 input clk, rst_n;
 input strt;
 input tx_done;
@@ -7,7 +7,6 @@ input signed [17:0] din_1;
 output reg bsy_out;
 output rdy;
 output [17:0] dout;
-output trmt;
 
 reg wr;
 reg [6:0] addr_wr, addr_rd;
@@ -175,9 +174,6 @@ always_comb begin
     end
    endcase
 end
-
-
-assign trmt = addr_wr == 7'h79;
 
 
 // Read DATA

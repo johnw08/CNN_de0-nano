@@ -1,32 +1,43 @@
-module layer_4(clk, rst_n, strt, din, tx_done, dout, rdy);
+module layer_4(clk, rst_n, strt, din, tx_done, dout, rdy, trmt, q);
 input clk, rst_n;
 input strt;
 input tx_done;
 input signed [17:0] din;
 output [17:0] dout[15:0];
 output rdy;
+output trmt;
+output [35:0] q;
 
 reg wr;
 reg [1:0] addr_wr, addr_rd;
+wire [1:0] addr_rd_ram; 
 wire [35:0] din_ram[15:0];
 wire [35:0] dout_ram[15:0];
 
-l4_ram l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[0]), .dout(dout_ram[0]));
-l4_ram l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[1]), .dout(dout_ram[1]));
-l4_ram l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[2]), .dout(dout_ram[2]));
-l4_ram l4_ram_3(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[3]), .dout(dout_ram[3]));
-l4_ram l4_ram_4(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[4]), .dout(dout_ram[4]));
-l4_ram l4_ram_5(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[5]), .dout(dout_ram[5]));
-l4_ram l4_ram_6(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[6]), .dout(dout_ram[6]));
-l4_ram l4_ram_7(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[7]), .dout(dout_ram[7]));
-l4_ram l4_ram_8(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[8]), .dout(dout_ram[8]));
-l4_ram l4_ram_9(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[9]), .dout(dout_ram[9]));
-l4_ram l4_ram_10(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[10]), .dout(dout_ram[10]));
-l4_ram l4_ram_11(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[11]), .dout(dout_ram[11]));
-l4_ram l4_ram_12(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[12]), .dout(dout_ram[12]));
-l4_ram l4_ram_13(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[13]), .dout(dout_ram[13]));
-l4_ram l4_ram_14(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[14]), .dout(dout_ram[14]));
-l4_ram l4_ram_15(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[15]), .dout(dout_ram[15]));
+l4_ram l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[0]), .dout(dout_ram[0]));
+l4_ram l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[1]), .dout(dout_ram[1]));
+l4_ram l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[2]), .dout(dout_ram[2]));
+l4_ram l4_ram_3(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[3]), .dout(dout_ram[3]));
+l4_ram l4_ram_4(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[4]), .dout(dout_ram[4]));
+l4_ram l4_ram_5(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[5]), .dout(dout_ram[5]));
+l4_ram l4_ram_6(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[6]), .dout(dout_ram[6]));
+l4_ram l4_ram_7(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[7]), .dout(dout_ram[7]));
+l4_ram l4_ram_8(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[8]), .dout(dout_ram[8]));
+l4_ram l4_ram_9(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[9]), .dout(dout_ram[9]));
+l4_ram l4_ram_10(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[10]), .dout(dout_ram[10]));
+l4_ram l4_ram_11(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[11]), .dout(dout_ram[11]));
+l4_ram l4_ram_12(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[12]), .dout(dout_ram[12]));
+l4_ram l4_ram_13(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[13]), .dout(dout_ram[13]));
+l4_ram l4_ram_14(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[14]), .dout(dout_ram[14]));
+l4_ram l4_ram_15(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd_ram), .din(din_ram[15]), .dout(dout_ram[15]));
+
+//genvar n;
+//generate
+//	for (n = 0; n < 16; n = n + 1) begin: dout_g
+//		assign dout[n] = dout_ram[n][17:0];
+//	end
+//endgenerate
+
 
 wire [8:0] dout_rom[15:0];
 reg [8:0] addr_rd_rom;
@@ -60,7 +71,7 @@ end
 wire signed [17:0] dout_rom_ex[15:0];
 genvar i;
 generate
-  for (i = 0; i < 16; i = i + 1) begin
+  for (i = 0; i < 16; i = i + 1) begin: dout_rom_ex_g
     assign dout_rom_ex[i] = {{9{dout_rom[i][8]}}, dout_rom[i][8:0]};
   end
 endgenerate
@@ -76,11 +87,12 @@ always @(posedge clk, negedge rst_n) begin
     cnt_100 <= cnt_100 + 7'h1;
 end
 
+
 wire signed [35:0] mult[15:0];
 wire [35:0] accum[15:0];
 genvar j;
 generate
-  for (j = 0; j < 16; j = j + 1) begin
+  for (j = 0; j < 16; j = j + 1) begin: mult_g
     assign mult[j] = din * dout_rom_ex[j];
     assign accum[j] = cnt_100 == 7'h0 ? mult[j] : mult[j] + dout_ram[j];
   end
@@ -109,7 +121,7 @@ wire signed [35:0] bias[15:0];
 wire [35:0] relu[15:0];
 genvar k;
 generate
-  for (k = 0; k < 16; k = k + 1) begin
+  for (k = 0; k < 16; k = k + 1) begin: bias_g
     assign bias[k] = accum[k] + {{27{dout_bias[k][8]}}, dout_bias[k][8:0]};
     assign relu[k] = bias[k] > 0 ? bias[k] : 36'h0;
   end
@@ -117,7 +129,7 @@ endgenerate
 
 genvar m;
 generate
-  for (m = 0; m < 16; m = m + 1) begin
+  for (m = 0; m < 16; m = m + 1) begin: din_ram_g
     assign din_ram[m] = cnt_100 == 7'h63 ? relu[m] : accum[m];
   end
 endgenerate
@@ -182,6 +194,83 @@ always_comb begin
     end
   endcase
 end
+
+wire [35:0] sum;
+reg temp_inc;
+reg [35:0] temp;
+always@(posedge clk, negedge rst_n) begin
+	if (!rst_n) 
+		temp <= 36'h0;
+	else if (temp_inc)
+		temp <= sum + temp;
+end
+
+assign q = temp;
+
+reg a;
+reg a_inc;
+always@(posedge clk, negedge rst_n) begin
+	if (!rst_n) begin
+		a <= 0;
+	end
+	else if (a_inc)
+		a<= 1;
+end
+
+assign trmt = cnt_100 >= 7'h64 && a == 1;
+
+assign sum = dout_ram[0]+dout_ram[1]+
+dout_ram[2]+dout_ram[3]+dout_ram[4]+dout_ram[5]+dout_ram[6]+dout_ram[7]+dout_ram[8]+dout_ram[9]+dout_ram[10]+
+dout_ram[11]+dout_ram[12]+dout_ram[13]+dout_ram[14]+dout_ram[15];
+typedef enum reg [2:0] {I, O, TW, TH, F} s_t;
+s_t state, nxt_state;
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    state <= I;
+  else if (tx_done)
+    state <= I;
+  else
+    state <= nxt_state;
+end
+reg [1:0]addr;
+always_comb begin
+		nxt_state = I;
+		temp_inc = 0;
+		a_inc = 0;
+		addr = 2'h0;
+		case(state)
+			I: begin
+				if (cnt_100 == 7'h64) begin
+					nxt_state = O;
+					addr = 2'h0;
+				end
+			end
+			O: begin
+				nxt_state = TW;
+				addr = 2'h1;
+				temp_inc = 1;
+			end
+			TW:begin
+				nxt_state = TH;
+				addr = 2'h2;
+				temp_inc = 1;
+			
+			end
+			TH: begin
+				nxt_state = F;
+				addr = 2'h3;
+				temp_inc = 1;
+			end
+			default: begin
+				temp_inc = 1;
+				a_inc = 1;
+				
+			end
+		endcase
+end
+
+assign addr_rd_ram = cnt_100 >= 7'h64 ? addr : addr_rd;
+
 
 /*
 input clk, rst_n;

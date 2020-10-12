@@ -32,18 +32,25 @@ module cnn_core(clk, rst_n, strt, tx_done, din, bsy, trmt, dout);
 
   layer_2 conv_1(.clk(clk), .rst_n(rst_n), .strt(rdy_l1), .tx_done(tx_done)
                , .din_0(dout_l1_0), .din_1(dout_l1_1), .bsy_out(bsy_in_l1)
-               , .dout(dout_l2), .trmt(trmt), .rdy(rdy_l2));
-  assign dout = dout_l2;
+               , .dout(dout_l2), .rdy(rdy_l2));
+
   layer_3 max_1(.clk(clk), .rst_n(rst_n), .strt(rdy_l2), .din(dout_l2)
                , .tx_done(tx_done), .rdy(rdy_l3), .dout(dout_l3));
 
   layer_4 dense(.clk(clk), .rst_n(rst_n), .strt(rdy_l3), .din(dout_l3)
-              , .tx_done(tx_done), .dout(dout_l4), .rdy(rdy_l4));
-/*
+              , .tx_done(tx_done), .dout(dout_l4), .rdy(rdy_l4), .trmt(trmt), .q(dout));
+
+//  assign dout = dout_l4[0] + dout_l4[1] + dout_l4[2] + dout_l4[3] + dout_l4[4] + dout_l4[5]
+//					+ dout_l4[6] + dout_l4[7] + dout_l4[8] + dout_l4[9] + dout_l4[10] + dout_l4[11]
+//					+ dout_l4[12] + dout_l4[13] + dout_l4[14] + dout_l4[15];
+//  
+  
+  
+				  /* +
   wire [17:0] dout_l0_0[3:0], dout_l0_1[3:0];
   wire rd_l0;
 
-  wire [17:0] dout_l1[17:0];
+  wire [17:0] dout_l1[17:
   wire rd_l1;
   wire addr_rd_inc_l1;
 
