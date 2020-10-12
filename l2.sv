@@ -1,17 +1,18 @@
-module layer_2(clk, rst_n, strt, tx_done, din_0, din_1, bsy_out, dout_0, dout_1, dout_2, dout_3, trmt
-);
+module layer_2(clk, rst_n, strt, tx_done, din_0, din_1, bsy_out, rdy, dout, trmt);
 input clk, rst_n;
 input strt;
 input tx_done;
 input signed [17:0] din_0;
 input signed [17:0] din_1;
 output reg bsy_out;
-output [17:0] dout_0, dout_1, dout_2, dout_3;
+output rdy;
+output [17:0] dout;
 output trmt;
 
 reg wr;
 reg [6:0] addr_wr, addr_rd;
 wire [17:0] relu_0, relu_1, relu_2, relu_3;
+wire [17:0] dout_0, dout_1, dout_2, dout_3;
 
 l2_ram l2_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd)
               , .din(relu_0), .dout(dout_0));
@@ -177,6 +178,90 @@ end
 
 
 assign trmt = addr_wr == 7'h79;
+
+
+// Read DATA
+reg addr_rd_inc;
+reg [2:0] cnt_5;
+always @ (posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    cnt_5 <= 3'h0;
+  else if (tx_done)
+    cnt_5 <= 3'h0;
+  else if (addr_rd_inc)
+    cnt_5 <= cnt_5 == 3'h4 ? 3'h0 : cnt_5 + 3'h1;
+end
+
+reg [6:0] addr_rd_ram;
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    addr_rd_ram <= 7'hC;
+  else if (tx_done)
+    addr_rd_ram <= 7'hC;
+  else if (addr_rd_inc)
+    addr_rd_ram <= cnt_5 == 3'h4 ? addr_rd_ram + 7'hE : addr_rd_ram + 7'h2;
+end
+
+assign rdy = addr_rd_ram < addr_wr;
+
+reg cnt_4_inc;
+reg [1:0] cnt_4;
+always @ (posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    cnt_4 <= 2'h0;
+  else if (cnt_4_inc)
+    cnt_4 <= cnt_4 + 2'h1;
+end
+
+assign dout = cnt_4 == 2'h0 ? dout_0
+            : cnt_4 == 2'h1 ? dout_1
+            : cnt_4 == 2'h2 ? dout_2 : dout_3;
+
+typedef enum reg [2:0] {INI, ONE, TWO, THREE, FOUR} state_rd_t;
+state_rd_t state_rd, nxt_state_rd;
+
+always @(posedge clk, negedge rst_n) begin
+  if (!rst_n)
+    state_rd <= INI;
+  else if (tx_done)
+    state_rd <= INI;
+  else
+    state_rd <= nxt_state_rd;
+end
+
+always_comb begin
+  nxt_state_rd = INI;
+  addr_rd_inc = 0;
+  cnt_4_inc = 0;
+  addr_rd = 7'h0;
+
+  case(state_rd)
+    INI: begin
+      if (rdy) begin
+        nxt_state_rd = ONE;
+        addr_rd = addr_rd_ram - 7'h0C;
+      end
+    end
+    ONE: begin
+      nxt_state_rd = TWO;
+      addr_rd = addr_rd_ram - 7'h0B;
+    end
+    TWO: begin
+      nxt_state_rd = THREE;
+      addr_rd = addr_rd_ram - 7'h01;
+    end
+    THREE: begin
+      nxt_state_rd = FOUR;
+      addr_rd = addr_rd_ram;
+    end
+    default: begin
+      cnt_4_inc = 1;
+      if (cnt_4 == 2'h3) begin
+        addr_rd_inc = 1;
+      end
+    end
+  endcase
+end
 
 
 /*

@@ -1,12 +1,12 @@
-module l4_rom_1(clk, addr_rd, dout);
+module l4_rom_b8 (clk, addr_rd, dout);
 input clk;
-input [8:0] addr_rd;
+input [1:0] addr_rd;
 output reg [8:0] dout;
 
-reg [8:0] rom[511:0];
+reg [8:0] rom[3:0];
 
 initial begin
-  $readmemb("l4_Weight_1.txt", rom);
+  $readmemb("l4_Weight_bias_8.txt", rom);
 end
 
 always @(posedge clk) begin
