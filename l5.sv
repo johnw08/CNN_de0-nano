@@ -76,7 +76,7 @@ always @(posedge clk) begin
 end
 
 wire signed [35:0] bias;
-assign bias = accum + {{27{dout_bias[8]}}, dout_bias[8:0]};
+assign bias = temp + {{27{dout_bias[8]}}, dout_bias[8:0]};
 
 wire signed [35:0] relu;
 assign relu = bias > 0 ? bias : 36'h0;
@@ -105,7 +105,7 @@ end
 
 assign greater = relu > dout_max;
 
-typedef enum reg [2:0] {IDLE, ONE, TWO, THREE, FOUR} state_t;
+typedef enum reg [2:0] {IDLE, ONE, TWO, THREE, FOUR, FIVE} state_t;
 state_t state, nxt_state;
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
@@ -132,6 +132,8 @@ always_comb begin
       end
     end
     ONE: begin
+      if (cnt_10 == 4'hA)
+        nxt_state = ONE;
       nxt_state = TWO;
       addr_rd_inc = 1;
     end
@@ -143,16 +145,15 @@ always_comb begin
       nxt_state = FOUR;
       addr_rd_inc = 1;
     end
+    FOUR: begin
+      nxt_state = FIVE;
+    end
     default: begin
-      if (cnt_10 == 4'hA)
-        nxt_state = FOUR;
-      else begin
-        nxt_state = ONE;
-        addr_rd_inc = 1;
-        temp_init = 1;
-        cnt_10_inc = 1;
-        update = 1;
-      end
+      nxt_state = ONE;
+      addr_rd_inc = 1;
+      update = 1;
+      temp_init = 1;
+      cnt_10_inc = 1;
     end
   endcase
 end

@@ -236,8 +236,7 @@ always_comb begin
 				addr_rd_suc = 2'h3;
 			end
 			default: begin
-        nxt_state_rd = O;
-        addr_rd_suc = 2'h0;
+        nxt_state_rd = I;
 			end
 		endcase
 end
