@@ -50,7 +50,7 @@ wire signed [17:0] dout_rom_ex[15:0];
 wire signed [35:0] mult[15:0];
 genvar i;
 generate
-  for (i = 0; i < 16; i = i + 1) begin
+  for (i = 0; i < 16; i = i + 1) begin: mult_g
     assign dout_rom_ex[i] = {{9{dout_rom[i][8]}}, dout_rom[i][8:0]};
     assign mult[i] = din[i] * dout_rom_ex[i];
   end

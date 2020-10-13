@@ -1,12 +1,12 @@
- // module cnn(clk, RST_n, RX, TX, LED);
-module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
+ module cnn(clk, RST_n, RX, TX, LED);
+//module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
   output TX;
-  // output [7:0] LED;
- input rx_rdy;
- input [7:0] rx_data;
+  output [7:0] LED;
+// input rx_rdy;
+// input [7:0] rx_data;
 
   wire rst_n;
   wire tx_done;
@@ -41,11 +41,11 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
 
   rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
 
-/*
+
   UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
               ,.tx_data(tx_data),.tx_done(tx_done));
-*/
+
   cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
                          ,.addr_rd(addr_rd),.dout(dout_ram));
 
@@ -197,7 +197,7 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   end
 
 
-  // assign LED = 8'hFF;
+  assign LED = 8'hFF;
   /*
   assign addr_rd_mod = addr_rd_cnt == 5'h19;
   assign addr_rd_inc = addr_rd_mod ? addr_rd + 10'h3 : addr_rd + 10'h1;
