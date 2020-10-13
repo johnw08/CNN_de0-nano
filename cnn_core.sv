@@ -38,14 +38,17 @@ module cnn_core(clk, rst_n, strt, tx_done, din, bsy, trmt, dout);
                , .tx_done(tx_done), .rdy(rdy_l3), .dout(dout_l3));
 
   layer_4 dense(.clk(clk), .rst_n(rst_n), .strt(rdy_l3), .din(dout_l3)
-              , .tx_done(tx_done), .dout(dout_l4), .rdy(rdy_l4), .trmt(trmt), .q(dout));
+              , .tx_done(tx_done), .dout(dout_l4), .rdy(rdy_l4));
+
+  layer_5 out(.clk(clk), .rst_n(rst_n), .strt(rdy_l4), .din(dout_l4)
+               , .tx_done(tx_done), .trmt(trmt), .dout(dout));
 
 //  assign dout = dout_l4[0] + dout_l4[1] + dout_l4[2] + dout_l4[3] + dout_l4[4] + dout_l4[5]
 //					+ dout_l4[6] + dout_l4[7] + dout_l4[8] + dout_l4[9] + dout_l4[10] + dout_l4[11]
 //					+ dout_l4[12] + dout_l4[13] + dout_l4[14] + dout_l4[15];
-//  
-  
-  
+//
+
+
 				  /* +
   wire [17:0] dout_l0_0[3:0], dout_l0_1[3:0];
   wire rd_l0;

@@ -18,7 +18,7 @@ cnn iDUT(.clk(clk), .RST_n(rst), .RX(rx), .TX(tx), .rx_data(rx_data), .rx_rdy(rx
 always #1 clk = ~clk;
 
 initial begin
-$readmemb("cnn_img_0.txt", w);
+$readmemb("cnn_img_1.txt", w);
 $readmemb("l0_q0.txt", l0_q0);
 $readmemb("l0_q1.txt", l0_q1);
 $readmemb("l1_q0.txt", l1_q0);
@@ -55,6 +55,10 @@ for (int i = 0; i < 98; i++) begin
 	repeat(10) @(negedge clk);
 end
 
+@(posedge iDUT.trmt) begin
+	$display("%d", iDUT.tx_data);
+	$stop();
+end
 repeat(30000) @(negedge clk);
 
 for (int i = 0; i < 784; i++) begin
@@ -195,18 +199,19 @@ for (int i = 0; i < 4; i++) begin
 	end*/
 end
 
-/*
+
 if (iDUT.trmt === 1'b1) begin
-	if (iDUT.tx_data != 8'h5)begin
+	if (iDUT.tx_data !== 8'h0)begin
 		$display("label: 5, predict: %d", iDUT.tx_data);
 		$stop();
 	end
 end
 
-*/
+
 $display("%d", a);
 //$display("%d, %d", l4_q[43], iDUT.core.dense_4.l4_ram.ram[43][17:0]);
 $display("%d, %d",l3_q[50], iDUT.core.max_1.l3_ram.ram[50]);
+$display("%d", iDUT.tx_data);
 $display("Success");
 $stop();
 end
