@@ -46,9 +46,9 @@
   UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
             ,.tx_data(tx_data),.tx_done(tx_done));
-    */        
+    */
   UAR uar(.reset(rst_n),.clk(clk),.rx_i(RX),.rx_data_o(rx_data),.rx_ready_o(rx_rdy)
-          .tx_o(TX),.tx_data_i(tx_data),.tx_ready_i(trmt))
+          ,.tx_o(TX),.tx_data_i(tx_data),.tx_ready_i(trmt));
 
 
   cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
@@ -111,7 +111,7 @@
 			LED <= tx_data;
   end
 
-
+/*
 always @(posedge clk, negedge rst_n) begin
 		if (!rst_n)
 			LED <= 8'hF0;
