@@ -18,7 +18,7 @@ cnn iDUT(.clk(clk), .RST_n(rst), .RX(rx), .TX(tx), .rx_data(rx_data), .rx_rdy(rx
 always #1 clk = ~clk;
 
 initial begin
-$readmemb("cnn_img_1.txt", w);
+$readmemb("cnn_img_0.txt", w);
 $readmemb("l0_q0.txt", l0_q0);
 $readmemb("l0_q1.txt", l0_q1);
 $readmemb("l1_q0.txt", l1_q0);
@@ -40,6 +40,7 @@ rst = 0;
 @(negedge clk) rst = 1;
 repeat(20) @(negedge clk);
 
+for (int j = 0; j < 10; j++) begin
 for (int i = 0; i < 98; i++) begin
 	rx_data[0] = w[i*8];
 	rx_data[1] = w[i*8 + 1];
@@ -52,14 +53,17 @@ for (int i = 0; i < 98; i++) begin
 
 	rx_rdy = 1;
 	@(negedge clk) rx_rdy = 0;
-	repeat(10) @(negedge clk);
+	repeat(50) @(negedge clk);
 end
 
 @(posedge iDUT.trmt) begin
 	$display("%d", iDUT.tx_data);
-	$stop();
+	//$stop();
 end
-repeat(30000) @(negedge clk);
+repeat(300) @(negedge clk);
+end
+$stop();
+
 
 for (int i = 0; i < 784; i++) begin
 	if(w[i] !== iDUT.input_ram.ram[i])begin
@@ -73,6 +77,7 @@ for (int i = 0; i < 766; i++) begin
 	if (l0_q0[i] !== iDUT.core.conv_0.l0_ram_0.ram[i])begin
 		$display("Error: %h, %h", l0_q0[i], iDUT.core.conv_0.l0_ram_0.ram[i]);
 		$display("%d", i);
+		//$display("%d", j);
 		a = a + 1;
 		$stop();
 	end
@@ -190,13 +195,6 @@ for (int i = 0; i < 4; i++) begin
   if (l4_q[i*16+15] !== iDUT.core.dense.l4_ram_15.ram[i]) begin
     $stop();
   end
-  /*
-	if(l4_q[i] !== iDUT.core.dense_4.l4_ram.ram[i][17:0])begin
-		$display("Error: %h, %h", l4_q[i], iDUT.core.dense_4.l4_ram.ram[i][17:0]);
-		$display("%d", i);
-		a = a + 1;
-		$stop();
-	end*/
 end
 
 

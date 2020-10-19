@@ -1,7 +1,6 @@
-module UART(clk,rst_n,rst,RX,TX,rx_rdy,clr_rx_rdy,rx_data,trmt,tx_data,tx_done);
+module UART(clk,rst_n,RX,TX,rx_rdy,clr_rx_rdy,rx_data,trmt,tx_data,tx_done);
 
 input clk,rst_n;
-input rst;
 input RX,trmt;
 input clr_rx_rdy;
 input [7:0] tx_data;
@@ -39,9 +38,6 @@ localparam TX_STATE = 1'b1;
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
     A005 <= IDLE_tx;
-
-  else if (rst)
-    A005 <= IDLE_tx;
   else
     A005 <= A006;
 
@@ -49,8 +45,6 @@ always @(posedge clk or negedge rst_n)
 
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
-    A008 <= 4'b0000;
-  else if (rst)
     A008 <= 4'b0000;
   else if (A010)
     A008 <= 4'b0000;
@@ -61,8 +55,6 @@ always @(posedge clk or negedge rst_n)
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
     A009 <= 434;
-  else if (rst)
-    A009 <= 434;
   else if (A010 || A012)
     A009 <= 434;
   else if (A011)
@@ -72,8 +64,6 @@ always @(posedge clk or negedge rst_n)
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
     A007 <= 9'h1FF;
-  else if (rst)
-    A007 <= 9'h1FF;
   else if (A010)
     A007 <= {tx_data,1'b0};
   else if (A012)
@@ -82,8 +72,6 @@ always @(posedge clk or negedge rst_n)
 
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
-    tx_done <= 1'b0;
-  else if (rst)
     tx_done <= 1'b0;
   else if (trmt)
     tx_done <= 1'b0;
@@ -96,7 +84,7 @@ always @(*)
     A010         = 0;
     A011 = 0;
     A006    = IDLE_tx;
-
+    
     case (A005)
       IDLE_tx : begin
         if (trmt)
@@ -128,16 +116,12 @@ assign TX = A007[0];
 always_ff @(posedge clk or negedge rst_n)
   if (!rst_n)
     state <= IDLE;
-  else if (rst)
-    state <= IDLE;
   else
     state <= nxt_state;
 
 
 always_ff @(posedge clk or negedge rst_n)
   if (!rst_n)
-    A002 <= 4'b0000;
-  else if (rst)
     A002 <= 4'b0000;
   else if (A014)
     A002 <= 4'b0000;
@@ -146,10 +130,8 @@ always_ff @(posedge clk or negedge rst_n)
 
 
 always_ff @(posedge clk or negedge rst_n)
-
+  
   if (!rst_n)
-    A003 <= 217;
-  else if (rst)
     A003 <= 217;
   else if (A014)
     A003 <= 217;
@@ -167,23 +149,16 @@ always_ff @(posedge clk)
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
     A004 <= 1'b0;
-  else if (rst)
-    A004 <= 1'b0;
   else if (A014 || clr_rx_rdy)
     A004 <= 1'b0;
   else if (A015)
     A004 <= 1'b1;
 
 	assign rx_rdy = A004;
-
+	
 
 always_ff @(posedge clk or negedge rst_n)
   if (!rst_n)
-    begin
-      B001 <= 1'b1;
-      B002 <= 1'b1;
-    end
-  else if (rst)
     begin
       B001 <= 1'b1;
       B002 <= 1'b1;
@@ -200,7 +175,7 @@ always_comb
     A015    	  = 0;
     A016     = 0;
     nxt_state     = IDLE;
-
+    
     case (state)
       IDLE : begin
         if (!B002)

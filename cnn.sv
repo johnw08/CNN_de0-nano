@@ -1,12 +1,12 @@
- module cnn(clk, RST_n, RX, TX, LED);
-// module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
+ // module cnn(clk, RST_n, RX, TX, LED);
+module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
   output TX;
-  output reg [7:0] LED;
-// input rx_rdy;
-// input [7:0] rx_data;
+  // output reg [7:0] LED;
+input rx_rdy;
+input [7:0] rx_data;
 
   wire rst_n;
   wire tx_done;
@@ -33,8 +33,6 @@
   reg rd_rdy;
   reg [9:0] addr_rd_ram;
 
-  reg clr;
-
 
   typedef enum reg {IDLE, DATA} state_wr_t;
   state_wr_t state_wr, nxt_state_wr;
@@ -44,29 +42,29 @@
 
   rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
 
-  reg rst;
-  UART uart(.clk(clk),.rst(rst),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
+/*
+  UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
 
             ,.tx_data(tx_data),.tx_done(tx_done));
-
-
+	*/
+  reg rst;
   cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
                          ,.addr_rd(addr_rd),.dout(dout_ram));
 
   cnn_core core(.clk(clk),.rst_n(rst_n),.strt(rd_rdy),.din(dout_ram)
-              ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(clr));
+              ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done));
 
- reg [6:0] cnt;
+ reg [4:0] cnt;
  reg cnt_inc;
  reg cnt_clr;
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
-      cnt <= 7'h0;
+      cnt <= 5'h0;
     else if (cnt_clr)
-      cnt <= 7'h0;
+      cnt <= 5'h0;
     else if (cnt_inc)
-      cnt <= cnt + 7'h1;
+      cnt <= cnt + 5'h1;
   end
 
  typedef enum reg {A, B} state_t;
@@ -91,7 +89,7 @@
       end
     end
     default: begin
-      if (cnt == 7'h7F) begin
+      if (cnt == 5'h1F) begin
         rst = 1;
         cnt_clr = 1;
       end
@@ -102,7 +100,7 @@
     end
    endcase
  end
-
+/*
   always @(posedge clk, negedge rst_n) begin
 		if (!rst_n)
 			LED <= 8'hF0;
@@ -127,15 +125,6 @@ always @(posedge clk, negedge rst_n) begin
 //	assign tx_data = 8'h06;
 
 //assign LED = 8'hF0;
-  reg f;
-  always @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
-      f <= 0;
-    else if (trmt)
-      f <= 0;
-    else if (rx_rdy)
-      f <= 1;
-  end
 
 
   /*
@@ -146,7 +135,7 @@ always @(posedge clk, negedge rst_n) begin
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       addr_wr <= 10'h0;
-    else if (clr)
+    else if (trmt)
       addr_wr <= 10'h0;
     else if (addr_wr_inc)
       addr_wr <= addr_wr + 10'h1;
@@ -160,7 +149,7 @@ always @(posedge clk, negedge rst_n) begin
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       cnt_8 <= 3'h0;
-    else if (clr)
+    else if (trmt)
       cnt_8 <= 3'h0;
     else if (cnt_8_inc)
       cnt_8 <= cnt_8 + 3'h1;
@@ -170,7 +159,7 @@ always @(posedge clk, negedge rst_n) begin
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       state_wr <= IDLE;
-    else if (clr)
+    else if (trmt)
       state_wr <= IDLE;
     else
       state_wr <= nxt_state_wr;
@@ -181,14 +170,11 @@ always @(posedge clk, negedge rst_n) begin
     wr = 0;
     cnt_8_inc = 0;
     addr_wr_inc = 0;
-    clr = 0;
 
     case(state_wr)
       IDLE:  begin
         if (rx_rdy) begin
           nxt_state_wr = DATA;
-          if (!f)
-            clr = 1;
         end
       end
       default: begin
@@ -284,6 +270,44 @@ always @(posedge clk, negedge rst_n) begin
       end
     endcase
   end
+
+
+
+  /*
+  assign addr_rd_mod = addr_rd_cnt == 5'h19;
+  assign addr_rd_inc = addr_rd_mod ? addr_rd + 10'h3 : addr_rd + 10'h1;
+
+  assign rd = addr_rd < addr_wr;
+
+  always @(posedge clk, negedge rst_n) begin
+    if (!rst_n)
+      addr_wr <= 10'h0;
+	  else if (tx_done)
+		  addr_wr <= 10'h0;
+    else if (rx_rdy)
+      addr_wr <= addr_wr + 10'h008;
+  end
+
+  always @(posedge clk, negedge rst_n) begin
+    if (!rst_n)
+      addr_rd_cnt <= 5'h0;
+    else if (tx_done)
+      addr_rd_cnt <= 5'h0;
+    else if (addr_inc)
+      addr_rd_cnt <= addr_rd_mod ? 5'h0 : addr_rd_cnt + 5'h1;
+  end
+
+  always @(posedge clk, negedge rst_n) begin
+    if (!rst_n)
+      addr_rd <= 10'h03A;
+    else if (tx_done)
+      addr_rd <= 10'h03A;
+    else if (addr_inc)
+      addr_rd <= addr_rd_inc;
+  end
+
+*/
+
 
 
 endmodule
