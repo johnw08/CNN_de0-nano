@@ -4,7 +4,7 @@
   input RST_n;
   input RX;
   output TX;
-  output [7:0] LED;
+  output reg [7:0] LED;
 // input rx_rdy;
 // input [7:0] rx_data;
 
@@ -32,6 +32,7 @@
   reg addr_rd_inc;
   reg rd_rdy;
   reg [9:0] addr_rd_ram;
+ 
 
   typedef enum reg {IDLE, DATA} state_wr_t;
   state_wr_t state_wr, nxt_state_wr;
@@ -44,13 +45,42 @@
 
   UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
-              ,.tx_data(tx_data),.tx_done(tx_done));
+  
+            ,.tx_data(tx_data),.tx_done(tx_done));
+	
 
   cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
                          ,.addr_rd(addr_rd),.dout(dout_ram));
 
   cnn_core core(.clk(clk),.rst_n(rst_n),.strt(rd_rdy),.din(dout_ram)
               ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done));
+		
+			
+  always @(posedge clk, negedge rst_n) begin
+		if (!rst_n)
+			LED <= 8'hF0;
+		else if (trmt)
+			LED <= tx_data;
+  end
+
+/*
+always @(posedge clk, negedge rst_n) begin
+		if (!rst_n)
+			LED <= 8'hF0;
+		else if (rx_rdy)
+			LED <= rx_data;
+  end
+  */
+//  reg a;
+  
+//  always @(negedge rst_n)
+//		a <= 1;
+//	
+//	assign trmt = a;
+//	assign tx_data = 8'h06;
+
+//assign LED = 8'hF0;
+
 
   /*
     Write Data
@@ -60,7 +90,7 @@
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       addr_wr <= 10'h0;
-    else if (tx_done)
+    else if (trmt)
       addr_wr <= 10'h0;
     else if (addr_wr_inc)
       addr_wr <= addr_wr + 10'h1;
@@ -74,7 +104,7 @@
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       cnt_8 <= 3'h0;
-    else if (tx_done)
+    else if (trmt)
       cnt_8 <= 3'h0;
     else if (cnt_8_inc)
       cnt_8 <= cnt_8 + 3'h1;
@@ -84,7 +114,7 @@
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       state_wr <= IDLE;
-    else if (tx_done)
+    else if (trmt)
       state_wr <= IDLE;
     else
       state_wr <= nxt_state_wr;
@@ -122,16 +152,16 @@
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       cnt_26 <= 5'h0;
-    else if (tx_done)
+    else if (trmt)
       cnt_26 <= 5'h0;
     else if (addr_rd_inc)
       cnt_26 <= cnt_26 == 5'h19 ? 5'h0 : cnt_26 + 5'h1;
   end
 
   always @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
+    if (!rst_n) 
       addr_rd_ram <= 10'h03A;
-    else if (tx_done)
+    else if (trmt)
       addr_rd_ram <= 10'h03A;
     else if (addr_rd_inc)
       addr_rd_ram <= cnt_26 == 5'h19 ? addr_rd_ram + 10'h3 : addr_rd_ram + 10'h1;
@@ -140,7 +170,7 @@
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       state_rd <= INI;
-    else if (tx_done)
+    else if (trmt)
       state_rd <= INI;
     else
       state_rd <= nxt_state_rd;
@@ -197,7 +227,7 @@
   end
 
 
-  assign LED = 8'hFF;
+  
   /*
   assign addr_rd_mod = addr_rd_cnt == 5'h19;
   assign addr_rd_inc = addr_rd_mod ? addr_rd + 10'h3 : addr_rd + 10'h1;

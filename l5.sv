@@ -11,7 +11,7 @@ reg [3:0] cnt_10;
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
     cnt_10 <= 4'h0;
-  else if (tx_done)
+  else if (trmt)
     cnt_10 <= 4'h0;
   else if (cnt_10_inc)
     cnt_10 <= cnt_10 + 4'h1;
@@ -40,7 +40,7 @@ reg addr_rd_inc;
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
     addr_rd <= 6'h0;
-  else if (tx_done)
+  else if (trmt)
     addr_rd <= 6'h0;
   else if (addr_rd_inc)
     addr_rd <= addr_rd + 6'h1;
@@ -87,7 +87,7 @@ reg [3:0] digit_max;
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
     digit_max <= 4'h0;
-  else if (tx_done)
+  else if (trmt)
     digit_max <= 4'h0;
   else if (update && greater)
     digit_max <= cnt_10;
@@ -97,7 +97,7 @@ reg signed [35:0] dout_max;
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
     dout_max <= 36'h0;
-  else if (tx_done)
+  else if (trmt)
     dout_max <= 36'h0;
   else if (update && greater)
     dout_max <= relu;
@@ -110,7 +110,7 @@ state_t state, nxt_state;
 always @(posedge clk, negedge rst_n) begin
   if (!rst_n)
     state <= IDLE;
-  else if (tx_done)
+  else if (trmt)
     state <= IDLE;
   else
     state <= nxt_state;
@@ -132,10 +132,16 @@ always_comb begin
       end
     end
     ONE: begin
-      if (cnt_10 == 4'hA)
+      if (cnt_10 == 4'hA) begin
         nxt_state = ONE;
-      nxt_state = TWO;
-      addr_rd_inc = 1;
+		  cnt_10_inc = 1;
+		end
+		else if (cnt_10_inc == 4'hB)
+			nxt_state = ONE;
+		else begin
+			nxt_state = TWO;
+			addr_rd_inc = 1;
+		end
     end
     TWO: begin
       nxt_state = THREE;
