@@ -1,12 +1,12 @@
- // module cnn(clk, RST_n, RX, TX, LED);
-module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
+ module cnn(clk, RST_n, RX, TX, LED);
+// module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
   output TX;
-  // output reg [7:0] LED;
-input rx_rdy;
-input [7:0] rx_data;
+  output reg [7:0] LED;
+// input rx_rdy;
+// input [7:0] rx_data;
 
   wire rst_n;
   wire tx_done;
@@ -100,7 +100,7 @@ input [7:0] rx_data;
     end
    endcase
  end
-/*
+
   always @(posedge clk, negedge rst_n) begin
 		if (!rst_n)
 			LED <= 8'hF0;
@@ -270,44 +270,6 @@ always @(posedge clk, negedge rst_n) begin
       end
     endcase
   end
-
-
-
-  /*
-  assign addr_rd_mod = addr_rd_cnt == 5'h19;
-  assign addr_rd_inc = addr_rd_mod ? addr_rd + 10'h3 : addr_rd + 10'h1;
-
-  assign rd = addr_rd < addr_wr;
-
-  always @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
-      addr_wr <= 10'h0;
-	  else if (tx_done)
-		  addr_wr <= 10'h0;
-    else if (rx_rdy)
-      addr_wr <= addr_wr + 10'h008;
-  end
-
-  always @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
-      addr_rd_cnt <= 5'h0;
-    else if (tx_done)
-      addr_rd_cnt <= 5'h0;
-    else if (addr_inc)
-      addr_rd_cnt <= addr_rd_mod ? 5'h0 : addr_rd_cnt + 5'h1;
-  end
-
-  always @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
-      addr_rd <= 10'h03A;
-    else if (tx_done)
-      addr_rd <= 10'h03A;
-    else if (addr_inc)
-      addr_rd <= addr_rd_inc;
-  end
-
-*/
-
 
 
 endmodule
