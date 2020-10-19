@@ -33,6 +33,8 @@
   reg rd_rdy;
   reg [9:0] addr_rd_ram;
 
+  reg clr;
+
 
   typedef enum reg {IDLE, DATA} state_wr_t;
   state_wr_t state_wr, nxt_state_wr;
@@ -53,18 +55,18 @@
                          ,.addr_rd(addr_rd),.dout(dout_ram));
 
   cnn_core core(.clk(clk),.rst_n(rst_n),.strt(rd_rdy),.din(dout_ram)
-              ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done));
+              ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(clr));
 
- reg [4:0] cnt;
+ reg [6:0] cnt;
  reg cnt_inc;
  reg cnt_clr;
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
-      cnt <= 5'h0;
+      cnt <= 7'h0;
     else if (cnt_clr)
-      cnt <= 5'h0;
+      cnt <= 7'h0;
     else if (cnt_inc)
-      cnt <= cnt + 5'h1;
+      cnt <= cnt + 7'h1;
   end
 
  typedef enum reg {A, B} state_t;
@@ -89,7 +91,7 @@
       end
     end
     default: begin
-      if (cnt == 5'h1F) begin
+      if (cnt == 7'h7F) begin
         rst = 1;
         cnt_clr = 1;
       end
@@ -125,6 +127,15 @@ always @(posedge clk, negedge rst_n) begin
 //	assign tx_data = 8'h06;
 
 //assign LED = 8'hF0;
+  reg f;
+  always @(posedge clk, negedge rst_n) begin
+    if (!rst_n)
+      f <= 0;
+    else if (trmt)
+      f <= 0;
+    else if (rx_rdy)
+      f <= 1;
+  end
 
 
   /*
@@ -135,7 +146,7 @@ always @(posedge clk, negedge rst_n) begin
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       addr_wr <= 10'h0;
-    else if (trmt)
+    else if (clr)
       addr_wr <= 10'h0;
     else if (addr_wr_inc)
       addr_wr <= addr_wr + 10'h1;
@@ -149,7 +160,7 @@ always @(posedge clk, negedge rst_n) begin
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       cnt_8 <= 3'h0;
-    else if (trmt)
+    else if (clr)
       cnt_8 <= 3'h0;
     else if (cnt_8_inc)
       cnt_8 <= cnt_8 + 3'h1;
@@ -159,7 +170,7 @@ always @(posedge clk, negedge rst_n) begin
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       state_wr <= IDLE;
-    else if (trmt)
+    else if (clr)
       state_wr <= IDLE;
     else
       state_wr <= nxt_state_wr;
@@ -170,11 +181,14 @@ always @(posedge clk, negedge rst_n) begin
     wr = 0;
     cnt_8_inc = 0;
     addr_wr_inc = 0;
+    clr = 0;
 
     case(state_wr)
       IDLE:  begin
         if (rx_rdy) begin
           nxt_state_wr = DATA;
+          if (!f)
+            clr = 1;
         end
       end
       default: begin
