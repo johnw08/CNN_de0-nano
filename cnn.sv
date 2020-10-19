@@ -1,12 +1,12 @@
- // module cnn(clk, RST_n, RX, TX, LED);
-module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
+ module cnn(clk, RST_n, RX, TX, LED);
+// module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
   output TX;
-  // output reg [7:0] LED;
-input rx_rdy;
-input [7:0] rx_data;
+  output reg [7:0] LED;
+// input rx_rdy;
+// input [7:0] rx_data;
 
   wire rst_n;
   wire tx_done;
@@ -42,13 +42,13 @@ input [7:0] rx_data;
 
   rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
 
-/*
+
   UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
 
             ,.tx_data(tx_data),.tx_done(tx_done));
-	*/
-  reg rst;
+
+
   cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
                          ,.addr_rd(addr_rd),.dout(dout_ram));
 
@@ -58,6 +58,7 @@ input [7:0] rx_data;
  reg [4:0] cnt;
  reg cnt_inc;
  reg cnt_clr;
+ reg rst;
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
       cnt <= 5'h0;
@@ -100,7 +101,7 @@ input [7:0] rx_data;
     end
    endcase
  end
-/*
+
   always @(posedge clk, negedge rst_n) begin
 		if (!rst_n)
 			LED <= 8'hF0;
@@ -108,7 +109,7 @@ input [7:0] rx_data;
 			LED <= tx_data;
   end
 
-/*
+
 always @(posedge clk, negedge rst_n) begin
 		if (!rst_n)
 			LED <= 8'hF0;
