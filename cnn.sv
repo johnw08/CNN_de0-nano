@@ -40,25 +40,10 @@
   typedef enum reg [3:0] {INI, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE} state_rd_t;
   state_rd_t state_rd, nxt_state_rd;
 
-  wire rst_n1;
   rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
-  wire rst_n2;
-  reg reset_n;
-  reg reset_inv;
-  rst_synch irst_synch2(.RST_n(reset_n),.clk(clk),.rst_n(rst_n2));
-  always @ (posedge clk, negedge rst_n1) begin
-    if (!rst_n1)
-      reset_n <= 1;
-    else if (reset_inv)
-      reset_n <= 0;
-    else
-      reset_n <=1;
-  end
-
-  // assign rst_n = rst_n1 && rst_n2;
 
 
-  UART uart(.clk(clk),.rst_n(rst_n1),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
+  UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
             ,.tx_data(tx_data),.tx_done(tx_done));
 
@@ -66,54 +51,54 @@
                          ,.addr_rd(addr_rd),.dout(dout_ram));
 
   cnn_core core(.clk(clk),.rst_n(rst_n),.strt(rd_rdy),.din(dout_ram)
-              ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done));
+              ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done),.addr(addr_wr));
 
- reg [6:0] cnt;
- reg cnt_inc;
- reg cnt_clr;
- reg rst;
-  always @(posedge clk, negedge rst_n) begin
-    if (!rst_n)
-      cnt <= 6'h0;
-    else if (cnt_clr)
-      cnt <= 6'h0;
-    else if (cnt_inc)
-      cnt <= cnt + 6'h1;
-  end
-
- typedef enum reg {A, B} state_t;
- state_t state, nxt_state;
- always @(posedge clk, negedge rst_n) begin
-   if (!rst_n)
-     state <= A;
-   else
-     state <= nxt_state;
- end
- always_comb begin
-   nxt_state = A;
-   cnt_inc = 0;
-   cnt_clr = 0;
-   reset_inv = 0;
-
-   case(state)
-    A: begin
-      if (trmt) begin
-        nxt_state = B;
-        cnt_inc = 1;
-      end
-    end
-    default: begin
-      if (cnt == 6'h3F) begin
-        cnt_clr = 1;
-        reset_inv = 1;
-      end
-      else begin
-        nxt_state = B;
-        cnt_inc = 1;
-      end
-    end
-   endcase
- end
+ // reg [6:0] cnt;
+ // reg cnt_inc;
+ // reg cnt_clr;
+ // reg rst;
+ //  always @(posedge clk, negedge rst_n) begin
+ //    if (!rst_n)
+ //      cnt <= 6'h0;
+ //    else if (cnt_clr)
+ //      cnt <= 6'h0;
+ //    else if (cnt_inc)
+ //      cnt <= cnt + 6'h1;
+ //  end
+ //
+ // typedef enum reg {A, B} state_t;
+ // state_t state, nxt_state;
+ // always @(posedge clk, negedge rst_n) begin
+ //   if (!rst_n)
+ //     state <= A;
+ //   else
+ //     state <= nxt_state;
+ // end
+ // always_comb begin
+ //   nxt_state = A;
+ //   cnt_inc = 0;
+ //   cnt_clr = 0;
+ //   reset_inv = 0;
+ //
+ //   case(state)
+ //    A: begin
+ //      if (trmt) begin
+ //        nxt_state = B;
+ //        cnt_inc = 1;
+ //      end
+ //    end
+ //    default: begin
+ //      if (cnt == 6'h3F) begin
+ //        cnt_clr = 1;
+ //        reset_inv = 1;
+ //      end
+ //      else begin
+ //        nxt_state = B;
+ //        cnt_inc = 1;
+ //      end
+ //    end
+ //   endcase
+ // end
 
   always @(posedge clk, negedge rst_n) begin
 		if (!rst_n)
