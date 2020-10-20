@@ -41,7 +41,7 @@
   state_rd_t state_rd, nxt_state_rd;
 
   wire rst_n1;
-  rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n1));
+  rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
   wire rst_n2;
   reg reset_n;
   reg reset_inv;
@@ -55,7 +55,7 @@
       reset_n <=1;
   end
 
-  assign rst_n = rst_n1 && rst_n2;
+  // assign rst_n = rst_n1 && rst_n2;
 
 
   UART uart(.clk(clk),.rst_n(rst_n1),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
