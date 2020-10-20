@@ -58,7 +58,7 @@
   assign rst_n = rst_n1 && rst_n2;
 
 
-  UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
+  UART uart(.clk(clk),.rst_n(rst_n1),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
             ,.tx_data(tx_data),.tx_done(tx_done));
 
