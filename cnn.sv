@@ -40,7 +40,23 @@
   typedef enum reg [3:0] {INI, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE} state_rd_t;
   state_rd_t state_rd, nxt_state_rd;
 
-  rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
+  wire rst_n1;
+  rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n1));
+  wire rst_n2;
+  reg reset_n;
+  reg reset_inv;
+  rst_synch irst_synch2(.RST_n(reset_n),.clk(clk),.rst_n(rst_n2));
+  always @ (posedge clk, negedge rst_n1) begin
+    if (!rst_n1)
+      reset_n <= 1;
+    else if (reset_inv)
+      reset_n <= 0;
+    else
+      reset_n <=1;
+  end
+
+  assign rst_n = rst_n1 && rst_n2;
+
 
   UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
@@ -52,17 +68,17 @@
   cnn_core core(.clk(clk),.rst_n(rst_n),.strt(rd_rdy),.din(dout_ram)
               ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done));
 
- reg [4:0] cnt;
+ reg [6:0] cnt;
  reg cnt_inc;
  reg cnt_clr;
  reg rst;
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
-      cnt <= 5'h0;
+      cnt <= 6'h0;
     else if (cnt_clr)
-      cnt <= 5'h0;
+      cnt <= 6'h0;
     else if (cnt_inc)
-      cnt <= cnt + 5'h1;
+      cnt <= cnt + 6'h1;
   end
 
  typedef enum reg {A, B} state_t;
@@ -75,9 +91,9 @@
  end
  always_comb begin
    nxt_state = A;
-   rst = 0;
    cnt_inc = 0;
    cnt_clr = 0;
+   reset_inv = 0;
 
    case(state)
     A: begin
@@ -87,9 +103,9 @@
       end
     end
     default: begin
-      if (cnt == 5'h1F) begin
-        rst = 1;
+      if (cnt == 6'h3F) begin
         cnt_clr = 1;
+        reset_inv = 1;
       end
       else begin
         nxt_state = B;
