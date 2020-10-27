@@ -12,9 +12,6 @@ reg [6:0] addr_wr, addr_rd;
 wire [17:0] dout;
 wire [17:0] comp;
 
-// l3_ram l3_ram(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd)
-//               , .din(comp), .dout(dout));
-
 ram #(.ADDR_WIDTH(7), .DATA_WIDTH(18)) l3_ram(.clk(clk), .wr(wr)
     , .addr_wr(addr_wr), .addr_rd(addr_rd), .din(comp), .dout(dout));
 

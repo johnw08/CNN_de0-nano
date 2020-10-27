@@ -35,17 +35,6 @@ end
 reg [3:0] addr_rd_w;
 wire [8:0] dout_rom_00, dout_rom_01, dout_rom_10, dout_rom_11;
 wire [8:0] dout_rom_20, dout_rom_21, dout_rom_30, dout_rom_31;
-
-// l2_rom_w #(.file("l2_W00.txt")) l2_rom_w00(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_00));
-// l2_rom_w #(.file("l2_W01.txt")) l2_rom_w01(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_01));
-// l2_rom_w #(.file("l2_W10.txt")) l2_rom_w10(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_10));
-// l2_rom_w #(.file("l2_W11.txt")) l2_rom_w11(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_11));
-// l2_rom_w #(.file("l2_W20.txt")) l2_rom_w20(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_20));
-// l2_rom_w #(.file("l2_W21.txt")) l2_rom_w21(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_21));
-// l2_rom_w #(.file("l2_W30.txt")) l2_rom_w30(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_30));
-// l2_rom_w #(.file("l2_W31.txt")) l2_rom_w31(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_31));
-
-
 rom #(.file("l2_W00.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l2_rom_w00(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_00));
 rom #(.file("l2_W01.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l2_rom_w01(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_01));
 rom #(.file("l2_W10.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l2_rom_w10(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_10));

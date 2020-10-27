@@ -13,4 +13,4 @@ module l0_rom_b (clk, dout_0, dout_1);
     dout_1 <= rom[1];
   end
 
-endmodule // l0_rom_3
+endmodule
