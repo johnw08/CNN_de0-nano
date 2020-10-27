@@ -13,23 +13,6 @@ wire [1:0] addr_rd_ram;
 wire [35:0] din_ram[15:0];
 wire [35:0] dout_ram[15:0];
 
-// l4_ram l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[0]), .dout(dout_ram[0]));
-// l4_ram l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[1]), .dout(dout_ram[1]));
-// l4_ram l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[2]), .dout(dout_ram[2]));
-// l4_ram l4_ram_3(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[3]), .dout(dout_ram[3]));
-// l4_ram l4_ram_4(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[4]), .dout(dout_ram[4]));
-// l4_ram l4_ram_5(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[5]), .dout(dout_ram[5]));
-// l4_ram l4_ram_6(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[6]), .dout(dout_ram[6]));
-// l4_ram l4_ram_7(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[7]), .dout(dout_ram[7]));
-// l4_ram l4_ram_8(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[8]), .dout(dout_ram[8]));
-// l4_ram l4_ram_9(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[9]), .dout(dout_ram[9]));
-// l4_ram l4_ram_10(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[10]), .dout(dout_ram[10]));
-// l4_ram l4_ram_11(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[11]), .dout(dout_ram[11]));
-// l4_ram l4_ram_12(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[12]), .dout(dout_ram[12]));
-// l4_ram l4_ram_13(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[13]), .dout(dout_ram[13]));
-// l4_ram l4_ram_14(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[14]), .dout(dout_ram[14]));
-// l4_ram l4_ram_15(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[15]), .dout(dout_ram[15]));
-
 ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[0]), .dout(dout_ram[0]));
 ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[1]), .dout(dout_ram[1]));
 ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[2]), .dout(dout_ram[2]));
@@ -58,22 +41,22 @@ endgenerate
 
 wire [8:0] dout_rom[15:0];
 reg [8:0] addr_rd_rom;
-l4_rom_w #(.file("l4_W0.txt")) l4_rom_w0(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[0]));
-l4_rom_w #(.file("l4_W1.txt")) l4_rom_w1(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[1]));
-l4_rom_w #(.file("l4_W2.txt")) l4_rom_w2(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[2]));
-l4_rom_w #(.file("l4_W3.txt")) l4_rom_w3(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[3]));
-l4_rom_w #(.file("l4_W4.txt")) l4_rom_w4(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[4]));
-l4_rom_w #(.file("l4_W5.txt")) l4_rom_w5(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[5]));
-l4_rom_w #(.file("l4_W6.txt")) l4_rom_w6(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[6]));
-l4_rom_w #(.file("l4_W7.txt")) l4_rom_w7(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[7]));
-l4_rom_w #(.file("l4_W8.txt")) l4_rom_w8(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[8]));
-l4_rom_w #(.file("l4_W9.txt")) l4_rom_w9(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[9]));
-l4_rom_w #(.file("l4_W10.txt")) l4_rom_w10(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[10]));
-l4_rom_w #(.file("l4_W11.txt")) l4_rom_w11(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[11]));
-l4_rom_w #(.file("l4_W12.txt")) l4_rom_w12(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[12]));
-l4_rom_w #(.file("l4_W13.txt")) l4_rom_w13(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[13]));
-l4_rom_w #(.file("l4_W14.txt")) l4_rom_w14(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[14]));
-l4_rom_w #(.file("l4_W15.txt")) l4_rom_w15(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[15]));
+rom #(.file("l4_W0.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w0(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[0]));
+rom #(.file("l4_W1.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w1(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[1]));
+rom #(.file("l4_W2.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w2(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[2]));
+rom #(.file("l4_W3.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w3(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[3]));
+rom #(.file("l4_W4.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w4(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[4]));
+rom #(.file("l4_W5.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w5(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[5]));
+rom #(.file("l4_W6.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w6(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[6]));
+rom #(.file("l4_W7.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w7(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[7]));
+rom #(.file("l4_W8.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w8(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[8]));
+rom #(.file("l4_W9.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w9(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[9]));
+rom #(.file("l4_W10.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w10(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[10]));
+rom #(.file("l4_W11.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w11(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[11]));
+rom #(.file("l4_W12.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w12(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[12]));
+rom #(.file("l4_W13.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w13(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[13]));
+rom #(.file("l4_W14.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w14(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[14]));
+rom #(.file("l4_W15.txt"), .ADDR_WIDTH(9), .DATA_WIDTH(9)) l4_rom_w15(.clk(clk), .addr_rd(addr_rd_rom), .dout(dout_rom[15]));
 
 reg addr_rom_inc;
 always @(posedge clk, negedge rst_n) begin
@@ -117,23 +100,22 @@ endgenerate
 
 reg [1:0] addr_rd_bias;
 wire [8:0] dout_bias[15:0];
-
-l4_rom_b #(.file("l4_B0.txt")) l4_rom_b0(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[0]));
-l4_rom_b #(.file("l4_B1.txt")) l4_rom_b1(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[1]));
-l4_rom_b #(.file("l4_B2.txt")) l4_rom_b2(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[2]));
-l4_rom_b #(.file("l4_B3.txt")) l4_rom_b3(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[3]));
-l4_rom_b #(.file("l4_B4.txt")) l4_rom_b4(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[4]));
-l4_rom_b #(.file("l4_B5.txt")) l4_rom_b5(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[5]));
-l4_rom_b #(.file("l4_B6.txt")) l4_rom_b6(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[6]));
-l4_rom_b #(.file("l4_B7.txt")) l4_rom_b7(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[7]));
-l4_rom_b #(.file("l4_B8.txt")) l4_rom_b8(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[8]));
-l4_rom_b #(.file("l4_B9.txt")) l4_rom_b9(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[9]));
-l4_rom_b #(.file("l4_B10.txt")) l4_rom_b10(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[10]));
-l4_rom_b #(.file("l4_B11.txt")) l4_rom_b11(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[11]));
-l4_rom_b #(.file("l4_B12.txt")) l4_rom_b12(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[12]));
-l4_rom_b #(.file("l4_B13.txt")) l4_rom_b13(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[13]));
-l4_rom_b #(.file("l4_B14.txt")) l4_rom_b14(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[14]));
-l4_rom_b #(.file("l4_B15.txt")) l4_rom_b15(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[15]));
+rom #(.file("l4_B0.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b0(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[0]));
+rom #(.file("l4_B1.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b1(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[1]));
+rom #(.file("l4_B2.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b2(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[2]));
+rom #(.file("l4_B3.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b3(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[3]));
+rom #(.file("l4_B4.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b4(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[4]));
+rom #(.file("l4_B5.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b5(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[5]));
+rom #(.file("l4_B6.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b6(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[6]));
+rom #(.file("l4_B7.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b7(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[7]));
+rom #(.file("l4_B8.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b8(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[8]));
+rom #(.file("l4_B9.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b9(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[9]));
+rom #(.file("l4_B10.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b10(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[10]));
+rom #(.file("l4_B11.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b11(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[11]));
+rom #(.file("l4_B12.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b12(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[12]));
+rom #(.file("l4_B13.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b13(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[13]));
+rom #(.file("l4_B14.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b14(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[14]));
+rom #(.file("l4_B15.txt"), .ADDR_WIDTH(2), .DATA_WIDTH(9)) l4_rom_b15(.clk(clk), .addr_rd(addr_rd_bias), .dout(dout_bias[15]));
 
 wire signed [35:0] bias[15:0];
 wire [35:0] relu[15:0];
