@@ -12,11 +12,17 @@ wire [17:0] comp_0, comp_1;
 reg wr;
 reg [7:0] addr_wr, addr_rd;
 
-l1_ram l1_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd)
-              , .din(comp_0), .dout(dout_0));
+// l1_ram l1_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd)
+//               , .din(comp_0), .dout(dout_0));
+//
+// l1_ram l1_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd)
+//               , .din(comp_1), .dout(dout_1));
 
-l1_ram l1_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd)
-              , .din(comp_1), .dout(dout_1));
+ram #(.ADDR_WIDTH(8), .DATA_WIDTH(18)) l1_ram_0(.clk(clk), .wr(wr)
+    , .addr_wr(addr_wr), .addr_rd(addr_rd), .din(comp_0), .dout(dout_0));
+
+ram #(.ADDR_WIDTH(8), .DATA_WIDTH(18)) l1_ram_1(.clk(clk), .wr(wr)
+    , .addr_wr(addr_wr), .addr_rd(addr_rd), .din(comp_1), .dout(dout_1));
 
 reg addr_wr_inc;
 always @(posedge clk, negedge rst_n) begin

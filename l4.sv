@@ -13,22 +13,40 @@ wire [1:0] addr_rd_ram;
 wire [35:0] din_ram[15:0];
 wire [35:0] dout_ram[15:0];
 
-l4_ram l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[0]), .dout(dout_ram[0]));
-l4_ram l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[1]), .dout(dout_ram[1]));
-l4_ram l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[2]), .dout(dout_ram[2]));
-l4_ram l4_ram_3(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[3]), .dout(dout_ram[3]));
-l4_ram l4_ram_4(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[4]), .dout(dout_ram[4]));
-l4_ram l4_ram_5(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[5]), .dout(dout_ram[5]));
-l4_ram l4_ram_6(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[6]), .dout(dout_ram[6]));
-l4_ram l4_ram_7(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[7]), .dout(dout_ram[7]));
-l4_ram l4_ram_8(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[8]), .dout(dout_ram[8]));
-l4_ram l4_ram_9(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[9]), .dout(dout_ram[9]));
-l4_ram l4_ram_10(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[10]), .dout(dout_ram[10]));
-l4_ram l4_ram_11(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[11]), .dout(dout_ram[11]));
-l4_ram l4_ram_12(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[12]), .dout(dout_ram[12]));
-l4_ram l4_ram_13(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[13]), .dout(dout_ram[13]));
-l4_ram l4_ram_14(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[14]), .dout(dout_ram[14]));
-l4_ram l4_ram_15(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[15]), .dout(dout_ram[15]));
+// l4_ram l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[0]), .dout(dout_ram[0]));
+// l4_ram l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[1]), .dout(dout_ram[1]));
+// l4_ram l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[2]), .dout(dout_ram[2]));
+// l4_ram l4_ram_3(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[3]), .dout(dout_ram[3]));
+// l4_ram l4_ram_4(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[4]), .dout(dout_ram[4]));
+// l4_ram l4_ram_5(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[5]), .dout(dout_ram[5]));
+// l4_ram l4_ram_6(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[6]), .dout(dout_ram[6]));
+// l4_ram l4_ram_7(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[7]), .dout(dout_ram[7]));
+// l4_ram l4_ram_8(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[8]), .dout(dout_ram[8]));
+// l4_ram l4_ram_9(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[9]), .dout(dout_ram[9]));
+// l4_ram l4_ram_10(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[10]), .dout(dout_ram[10]));
+// l4_ram l4_ram_11(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[11]), .dout(dout_ram[11]));
+// l4_ram l4_ram_12(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[12]), .dout(dout_ram[12]));
+// l4_ram l4_ram_13(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[13]), .dout(dout_ram[13]));
+// l4_ram l4_ram_14(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[14]), .dout(dout_ram[14]));
+// l4_ram l4_ram_15(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[15]), .dout(dout_ram[15]));
+
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_0(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[0]), .dout(dout_ram[0]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_1(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[1]), .dout(dout_ram[1]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_2(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[2]), .dout(dout_ram[2]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_3(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[3]), .dout(dout_ram[3]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_4(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[4]), .dout(dout_ram[4]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_5(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[5]), .dout(dout_ram[5]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_6(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[6]), .dout(dout_ram[6]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_7(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[7]), .dout(dout_ram[7]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_8(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[8]), .dout(dout_ram[8]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_9(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[9]), .dout(dout_ram[9]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_10(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[10]), .dout(dout_ram[10]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_11(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[11]), .dout(dout_ram[11]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_12(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[12]), .dout(dout_ram[12]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_13(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[13]), .dout(dout_ram[13]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_14(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[14]), .dout(dout_ram[14]));
+ram #(.ADDR_WIDTH(2), .DATA_WIDTH(36)) l4_ram_15(.clk(clk), .wr(wr), .addr_wr(addr_wr), .addr_rd(addr_rd), .din(din_ram[15]), .dout(dout_ram[15]));
+
 
 genvar n;
 generate
