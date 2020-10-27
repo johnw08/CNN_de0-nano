@@ -1,12 +1,13 @@
-module l2_rom_21(clk, addr_rd, dout);
+module l2_rom_w(clk, addr_rd, dout);
 input clk;
 input [3:0] addr_rd;
 output reg [8:0] dout;
+parameter file = "";
 
 reg [8:0] rom[15:0];
 
 initial begin
-  $readmemb("l2_Weight_21.txt", rom);
+  $readmemb(file, rom);
 end
 
 always @ (posedge clk) begin

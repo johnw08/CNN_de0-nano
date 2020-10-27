@@ -1,4 +1,4 @@
-module l2_rom_bias (clk, dout_0, dout_1, dout_2, dout_3);
+module l2_rom_b (clk, dout_0, dout_1, dout_2, dout_3);
   input clk;
   output reg [8:0] dout_0;
   output reg [8:0] dout_1;
@@ -8,7 +8,7 @@ module l2_rom_bias (clk, dout_0, dout_1, dout_2, dout_3);
   reg [8:0] rom[3:0];
 
   initial begin
-    $readmemb("l2_Weight_bias.txt", rom);
+    $readmemb("l2_B.txt", rom);
   end
 
   always @(posedge clk) begin
