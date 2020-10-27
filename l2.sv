@@ -55,7 +55,7 @@ l2_rom_w #(.file("l2_W31.txt")) l2_rom_w31(.clk(clk), .addr_rd(addr_rd_w), .dout
 
 
 wire [8:0] dout_bias_0, dout_bias_1, dout_bias_2, dout_bias_3;
-l2_rom_bias l2_rom_b(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1)
+l2_rom_b l2_rom_b(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1)
 		, .dout_2(dout_bias_2), .dout_3(dout_bias_3));
 
 wire signed [17:0] w_00;

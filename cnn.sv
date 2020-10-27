@@ -47,8 +47,11 @@ input [7:0] rx_data;
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
             ,.tx_data(tx_data),.tx_done(tx_done));
 */
-  cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
-                         ,.addr_rd(addr_rd),.dout(dout_ram));
+  // cnn_ram_input input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
+  //                        ,.addr_rd(addr_rd),.dout(dout_ram));
+
+  ram #(.ADDR_WIDTH(10), .DATA_WIDTH(1)) input_ram(.clk(clk),.wr(wr),.din(din_ram),.addr_wr(addr_wr)
+                        ,.addr_rd(addr_rd),.dout(dout_ram));
 
   cnn_core core(.clk(clk),.rst_n(rst_n),.strt(rd_rdy),.din(dout_ram)
               ,.trmt(trmt),.dout(tx_data),.bsy(bsy),.tx_done(tx_done),.addr(addr_wr));
