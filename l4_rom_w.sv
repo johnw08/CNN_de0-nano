@@ -1,12 +1,13 @@
-module l4_rom_2(clk, addr_rd, dout);
+module l4_rom_w(clk, addr_rd, dout);
 input clk;
 input [8:0] addr_rd;
 output reg [8:0] dout;
+parameter file = "";
 
 reg [8:0] rom[511:0];
 
 initial begin
-  $readmemb("l4_Weight_2.txt", rom);
+  $readmemb(file, rom);
 end
 
 always @(posedge clk) begin
