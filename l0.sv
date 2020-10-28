@@ -1,3 +1,6 @@
+/*
+  First Concolution Layer
+*/
 module layer_0(clk, rst_n, strt, tx_done, din, bsy_out, rdy, dout_0, dout_1);
 input clk, rst_n;
 input strt;
@@ -36,13 +39,12 @@ ram #(.ADDR_WIDTH(10), .DATA_WIDTH(18)) l0_ram_0(.clk(clk), .wr(wr)
 ram #(.ADDR_WIDTH(10), .DATA_WIDTH(18)) l0_ram_1(.clk(clk), .wr(wr)
     , .addr_wr(addr_wr), .din(din_ram_1), .addr_rd(addr_rd), .dout(dout_1));
 
-// l0_rom_w #(.file("l0_W0.txt")) l0_rom_w0(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_0));
-// l0_rom_w #(.file("l0_W1.txt")) l0_rom_w1(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_1));
+rom #(.file("l0_W0.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l0_rom_w0(.clk(clk)
+    , .addr_rd(addr_rd_w), .dout(dout_w_0));
+rom #(.file("l0_W1.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l0_rom_w1(.clk(clk)
+    , .addr_rd(addr_rd_w), .dout(dout_w_1));
 
-rom #(.file("l0_W0.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l0_rom_w0(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_0));
-rom #(.file("l0_W1.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l0_rom_w1(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_w_1));
-
-l0_rom_b l0_rom_b(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1));
+l0_bias l0_bias(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1));
 
 assign din_ex = {{8{din}}, din};
 
@@ -197,5 +199,20 @@ always_comb begin
     end
   endcase
 end
+endmodule
 
+module l0_bias (clk, dout_0, dout_1);
+  input clk;
+  output reg [8:0] dout_0, dout_1;
+
+  reg [8:0] rom[1:0];
+
+  initial begin
+    $readmemb("l0_B.txt", rom);
+  end
+
+  always @(posedge clk) begin
+    dout_0 <= rom[0];
+    dout_1 <= rom[1];
+  end
 endmodule

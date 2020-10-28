@@ -64,7 +64,7 @@ repeat(300) @(negedge clk);
 end
 $stop();
 
-
+/*
 for (int i = 0; i < 784; i++) begin
 	if(w[i] !== iDUT.input_ram.ram[i])begin
 		$display("Error: %h, %h, %d", w[i], iDUT.input_ram.ram[i], i);
@@ -212,8 +212,7 @@ $display("%d, %d",l3_q[50], iDUT.core.max_1.l3_ram.ram[50]);
 $display("%d", iDUT.tx_data);
 $display("Success");
 $stop();
+
+*/
 end
-
-
-
 endmodule

@@ -1,3 +1,6 @@
+/*
+  First Max-Pooling Layer
+*/
 module layer_1(clk, rst_n, strt, din_0, din_1, tx_done, bsy_in, rdy, dout_0, dout_1);
 input clk, rst_n;
 input strt;

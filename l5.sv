@@ -1,3 +1,6 @@
+/*
+  Output layer
+*/
 module layer_5(clk, rst_n, strt, din, tx_done, trmt, dout, addr);
 input clk, rst_n;
 input strt;
@@ -63,7 +66,8 @@ assign sum = mult[0] + mult[1] + mult[2] + mult[3] + mult[4] + mult[5]
             + mult[12] + mult[13] + mult[14] + mult[15];
 
 wire [8:0] dout_bias;
-l5_rom_b l5_rom_b(.clk(clk), .addr_rd(cnt_10), .dout(dout_bias));
+rom #(.file("l5_B.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l5_rom_b(.clk(clk)
+    , .addr_rd(cnt_10), .dout(dout_bias));
 
 reg temp_init;
 reg [35:0] temp;

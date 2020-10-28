@@ -1,3 +1,6 @@
+/*
+  Second Convolution Layer
+*/
 module layer_2(clk, rst_n, strt, tx_done, din_0, din_1, bsy_out, rdy, dout);
 input clk, rst_n;
 input strt;
@@ -44,9 +47,8 @@ rom #(.file("l2_W21.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l2_rom_w21(.clk(clk),
 rom #(.file("l2_W30.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l2_rom_w30(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_30));
 rom #(.file("l2_W31.txt"), .ADDR_WIDTH(4), .DATA_WIDTH(9)) l2_rom_w31(.clk(clk), .addr_rd(addr_rd_w), .dout(dout_rom_31));
 
-
 wire [8:0] dout_bias_0, dout_bias_1, dout_bias_2, dout_bias_3;
-l2_rom_b l2_rom_b(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1)
+l2_bias l2_bias(.clk(clk), .dout_0(dout_bias_0), .dout_1(dout_bias_1)
 		, .dout_2(dout_bias_2), .dout_3(dout_bias_3));
 
 wire signed [17:0] w_00;
@@ -258,5 +260,25 @@ always_comb begin
     end
   endcase
 end
+endmodule
 
+module l2_bias (clk, dout_0, dout_1, dout_2, dout_3);
+  input clk;
+  output reg [8:0] dout_0;
+  output reg [8:0] dout_1;
+  output reg [8:0] dout_2;
+  output reg [8:0] dout_3;
+
+  reg [8:0] rom[3:0];
+
+  initial begin
+    $readmemb("l2_B.txt", rom);
+  end
+
+  always @(posedge clk) begin
+    dout_0 <= rom[0];
+    dout_1 <= rom[1];
+    dout_2 <= rom[2];
+    dout_3 <= rom[3];
+  end
 endmodule

@@ -1,3 +1,6 @@
+/*
+  Second Max-Pooling Layer
+*/
 module layer_3(clk, rst_n, strt, din, tx_done, bsy_in, rdy, dout);
 input clk, rst_n;
 input strt;

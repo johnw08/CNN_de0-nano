@@ -1,12 +1,12 @@
- // module cnn(clk, RST_n, RX, TX, LED);
+// module cnn(clk, RST_n, RX, TX, LED);
 module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
   output TX;
   // output reg [7:0] LED;
-input rx_rdy;
-input [7:0] rx_data;
+  input rx_rdy;
+  input [7:0] rx_data;
 
   wire rst_n;
   wire tx_done;
