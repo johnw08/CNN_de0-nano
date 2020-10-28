@@ -166,6 +166,6 @@ always_comb begin
   endcase
 end
 
-assign trmt = cnt_10 == 4'hA && addr == 10'h310;
+assign trmt = cnt_10 == 4'hA;
 assign dout = {{4'b0}, digit_max[3:0]};
 endmodule
