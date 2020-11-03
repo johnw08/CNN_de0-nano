@@ -62,12 +62,38 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
 		else if (trmt)
 			LED <= tx_data;
   end
+*/
+  reg [6:0] addr_wr_raw, addr_rd_raw;
+  wire [7:0] dout_raw;
+  ram #(.ADDR_WIDTH(7), .DATA_WIDTH(8)) raw_ram(.clk(clk),.wr(rx_rdy)
+       ,.din(rx_data),.addr_wr(addr_wr_raw),.addr_rd(addr_rd_raw),.dout(dout_raw));
 
+   always @(posedge clk, negedge rst_n) begin
+     if (!rst_n)
+       addr_wr_raw <= 7'h0;
+     else if (trmt)
+       addr_wr_raw <= 7'h0;
+     else if (rx_rdy)
+       addr_wr_raw <= addr_wr_raw + 7'h1;
+   end
+
+   reg addr_rd_raw_inc;
+   always @(posedge clk, negedge rst_n) begin
+     if (!rst_n)
+       addr_rd_raw <= 7'h0;
+     else if (trmt)
+       addr_rd_raw <= 7'h0;
+     else if (addr_rd_raw_inc)
+       addr_rd_raw <= addr_rd_raw + 7'h1;
+   end
+
+   wire rdy_raw;
+   assign rdy_raw = addr_rd_raw < addr_wr_raw;
 
   /*
     Write Data
   */
-  assign din_ram = dout_rx[cnt_8];
+  assign din_ram = dout_raw[cnt_8];
 
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
@@ -78,10 +104,10 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
       addr_wr <= addr_wr + 10'h1;
   end
 
-  always @(posedge clk) begin
-    if (rx_rdy)
-      dout_rx <= rx_data;
-  end
+  // always @(posedge clk) begin
+  //   if (rx_rdy)
+  //     dout_rx <= rx_data;
+  // end
 
   always @(posedge clk, negedge rst_n) begin
     if (!rst_n)
@@ -107,10 +133,11 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
     wr = 0;
     cnt_8_inc = 0;
     addr_wr_inc = 0;
+    addr_rd_raw_inc = 0;
 
     case(state_wr)
       IDLE:  begin
-        if (rx_rdy) begin
+        if (rdy_raw) begin
           nxt_state_wr = DATA;
         end
       end
@@ -120,6 +147,8 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
         wr = 1;
         if (cnt_8 != 3'h7)
           nxt_state_wr = DATA;
+        else
+          addr_rd_raw_inc = 1;
       end
     endcase
   end
