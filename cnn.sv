@@ -1,12 +1,12 @@
-// module cnn(clk, RST_n, RX, TX, LED);
-module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
+module cnn(clk, RST_n, RX, TX, LED);
+// module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   input clk;
   input RST_n;
   input RX;
   output TX;
-  // output reg [7:0] LED;
-  input rx_rdy;
-  input [7:0] rx_data;
+  output reg [7:0] LED;
+  // input rx_rdy;
+  // input [7:0] rx_data;
 
   wire rst_n;
   wire tx_done;
@@ -41,12 +41,12 @@ module cnn(clk, RST_n, RX, TX, rx_data, rx_rdy);
   state_rd_t state_rd, nxt_state_rd;
 
   rst_synch irst_synch(.RST_n(RST_n),.clk(clk),.rst_n(rst_n));
-/*
+
 
   UART uart(.clk(clk),.rst_n(rst_n),.RX(RX),.TX(TX),.rx_rdy(rx_rdy)
               ,.clr_rx_rdy(rx_rdy),.rx_data(rx_data),.trmt(trmt)
             ,.tx_data(tx_data),.tx_done(tx_done));
-*/
+
 
   ram #(.ADDR_WIDTH(10), .DATA_WIDTH(1)) input_ram(.clk(clk),.wr(wr)
        ,.din(din_ram),.addr_wr(addr_wr),.addr_rd(addr_rd),.dout(dout_ram));
