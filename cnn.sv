@@ -63,6 +63,10 @@ module cnn(clk, RST_n, RX, TX, LED);
 			LED <= tx_data;
   end
 */
+
+  /*
+    Input Buffer
+  */
   reg [6:0] addr_wr_raw, addr_rd_raw;
   wire [7:0] dout_raw;
   ram #(.ADDR_WIDTH(7), .DATA_WIDTH(8)) raw_ram(.clk(clk),.wr(rx_rdy)

@@ -54,9 +54,9 @@ always @(posedge clk or negedge rst_n)
 
 always @(posedge clk or negedge rst_n)
   if (!rst_n)
-    A009 <= 434;
+    A009 <= 217;
   else if (A010 || A012)
-    A009 <= 434;
+    A009 <= 217;
   else if (A011)
     A009 <= A009-1;
 
@@ -84,7 +84,7 @@ always @(*)
     A010         = 0;
     A011 = 0;
     A006    = IDLE_tx;
-    
+
     case (A005)
       IDLE_tx : begin
         if (trmt)
@@ -130,7 +130,7 @@ always_ff @(posedge clk or negedge rst_n)
 
 
 always_ff @(posedge clk or negedge rst_n)
-  
+
   if (!rst_n)
     A003 <= 217;
   else if (A014)
@@ -155,7 +155,7 @@ always @(posedge clk or negedge rst_n)
     A004 <= 1'b1;
 
 	assign rx_rdy = A004;
-	
+
 
 always_ff @(posedge clk or negedge rst_n)
   if (!rst_n)
@@ -175,7 +175,7 @@ always_comb
     A015    	  = 0;
     A016     = 0;
     nxt_state     = IDLE;
-    
+
     case (state)
       IDLE : begin
         if (!B002)
