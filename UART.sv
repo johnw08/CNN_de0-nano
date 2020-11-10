@@ -132,9 +132,9 @@ always_ff @(posedge clk or negedge rst_n)
 always_ff @(posedge clk or negedge rst_n)
 
   if (!rst_n)
-    A003 <= 217;
+    A003 <= 109;
   else if (A014)
-    A003 <= 217;
+    A003 <= 109;
   else if (A013)
     A003 <= 217;
   else if (A016)
